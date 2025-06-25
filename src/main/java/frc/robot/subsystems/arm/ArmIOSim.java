@@ -16,8 +16,8 @@ public class ArmIOSim implements ArmIO {
             gearReduction,
             SingleJointedArmSim.estimateMOI(armLengthMeters, armMassKg),
             armLengthMeters,
-            Units.degreesToRadians(-180),
-            Units.degreesToRadians(180),
+            Units.degreesToRadians(-360000000),
+            Units.degreesToRadians(360000000),
             true,
             0);
   }
@@ -27,7 +27,7 @@ public class ArmIOSim implements ArmIO {
     sim.setInputVoltage(appliedVolts);
     sim.update(0.02);
 
-    inputs.positionDeg = Units.radiansToDegrees(sim.getAngleRads());
+    inputs.positionDeg = Units.radiansToDegrees(MathUtil.angleModulus(sim.getAngleRads()));
     inputs.velocityDegPerSec = Units.radiansToDegrees(sim.getVelocityRadPerSec());
     inputs.appliedVolts = appliedVolts;
   }
