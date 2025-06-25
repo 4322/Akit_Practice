@@ -21,6 +21,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
+import frc.robot.subsystems.arm.Arm;
+import frc.robot.subsystems.arm.ArmIO;
+import frc.robot.subsystems.arm.ArmIOSim;
 import frc.robot.subsystems.drive.Drive;
 import frc.robot.subsystems.drive.DriveIO;
 import frc.robot.subsystems.drive.DriveIOSim;
@@ -47,6 +50,8 @@ public class RobotContainer {
   private final Drive drive;
   private final Roller roller;
   public final Elevator elevator;
+  public final Arm arm1;
+  public final Arm arm2;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -62,6 +67,8 @@ public class RobotContainer {
         drive = new Drive(new DriveIOTalonSRX(), new GyroIOPigeon2());
         roller = new Roller(new RollerIOTalonSRX());
         elevator = new Elevator(new ElevatorIOReal());
+        arm1 = new Arm(new ArmIO() {}, 0);
+        arm2 = new Arm(new ArmIO() {}, 1);
         break;
 
       case SIM:
@@ -69,6 +76,8 @@ public class RobotContainer {
         drive = new Drive(new DriveIOSim(), new GyroIO() {});
         roller = new Roller(new RollerIOSim());
         elevator = new Elevator(new ElevatorIOReal());
+        arm1 = new Arm(new ArmIOSim(0.75, 7, 125), 0); // Small, Light arm with low reduction
+        arm2 = new Arm(new ArmIOSim(1, 10, 250), 1); // Big, Heavy arm with high reduction
         break;
 
       default:
@@ -76,6 +85,8 @@ public class RobotContainer {
         drive = new Drive(new DriveIO() {}, new GyroIO() {});
         roller = new Roller(new RollerIO() {});
         elevator = new Elevator(new ElevatorIO() {});
+        arm1 = new Arm(new ArmIO() {}, 0);
+        arm2 = new Arm(new ArmIO() {}, 1);
         break;
     }
 
