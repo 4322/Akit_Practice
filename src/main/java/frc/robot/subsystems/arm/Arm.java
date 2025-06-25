@@ -5,7 +5,6 @@ import org.littletonrobotics.junction.Logger;
 
 public class Arm extends SubsystemBase {
   // 0 degrees is straight ahead and positive is up. The position is reported as +/- 180 degrees.
-  // Please move this note into the subsystem code when it is ready.
   
   private ArmIO io;
   private ArmIOInputsAutoLogged inputs = new ArmIOInputsAutoLogged();
