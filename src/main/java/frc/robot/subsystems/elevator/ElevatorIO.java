@@ -14,8 +14,4 @@ public interface ElevatorIO {
   public default void setVoltage(double volts) {}
 
   public default void setPosition(double positionMeters) {}
-
-  public default double simPos() {
-    return 0.0;
-  }
 }
