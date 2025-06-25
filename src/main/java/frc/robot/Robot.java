@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.Threads;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.ArmMove;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -140,20 +141,12 @@ public class Robot extends LoggedRobot {
       autonomousCommand.cancel();
     }
 
-    timer.start();
+    new ArmMove(robotContainer.arm1).schedule();
   }
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {
-    if (timer.hasElapsed(10)) {
-      robotContainer.elevator.setPosition(0.1);
-    } else if (timer.hasElapsed(6)) {
-      robotContainer.elevator.setPosition(1);
-    } else if (timer.hasElapsed(2)) {
-      robotContainer.elevator.setPosition(0.4);
-    }
-  }
+  public void teleopPeriodic() {}
 
   /** This function is called once when test mode is enabled. */
   @Override
