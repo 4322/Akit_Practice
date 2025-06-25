@@ -17,13 +17,12 @@ public class ArmIOSim implements ArmIO {
   private static int instanceNum =
       0; // Line needed due to multiple instantiations of this class causing log overlap
 
-  private final Mechanism2d mech2d = new Mechanism2d(60, 60);
-  private final MechanismRoot2d armPivot = mech2d.getRoot("ArmPivot", 30, 30);
+  private final Mechanism2d mech2d = new Mechanism2d(2, 2);
+  private final MechanismRoot2d armPivot = mech2d.getRoot("ArmPivot", 1, 1);
   private final MechanismLigament2d armTower =
-      armPivot.append(
-          new MechanismLigament2d("ArmTower", 30, -90, 6, new Color8Bit(Color.kCoral)));
+      armPivot.append(new MechanismLigament2d("ArmTower", 1, -90, 6, new Color8Bit(Color.kCoral)));
   private final MechanismLigament2d arm =
-      armPivot.append(new MechanismLigament2d("Arm", 30, 0, 6, new Color8Bit(Color.kYellow)));
+      armPivot.append(new MechanismLigament2d("Arm", 1, 0, 6, new Color8Bit(Color.kYellow)));
 
   public ArmIOSim(double armLengthMeters, double armMassKg, double gearReduction) {
     sim =
