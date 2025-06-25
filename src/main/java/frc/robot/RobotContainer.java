@@ -76,8 +76,8 @@ public class RobotContainer {
         drive = new Drive(new DriveIOSim(), new GyroIO() {});
         roller = new Roller(new RollerIOSim());
         elevator = new Elevator(new ElevatorIOReal());
-        arm1 = new Arm(new ArmIOSim(0.75, 7, 125), 0); // Small, Light arm with low reduction
-        arm2 = new Arm(new ArmIOSim(1, 10, 250), 1); // Big, Heavy arm with high reduction
+        arm1 = new Arm(new ArmIOSim(0.75, 7, 125), 0);
+        arm2 = new Arm(new ArmIOSim(1, 12, 150), 1);
         break;
 
       default:
