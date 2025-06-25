@@ -20,6 +20,8 @@ public class ArmMove extends Command {
     this.arm = arm;
 
     addRequirements(arm);
+
+    armController.enableContinuousInput(-180.0, 180.0);
   }
 
   @Override
