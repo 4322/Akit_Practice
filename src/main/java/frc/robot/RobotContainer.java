@@ -30,6 +30,8 @@ import frc.robot.subsystems.drive.DriveIOSim;
 import frc.robot.subsystems.drive.DriveIOTalonSRX;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
+import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.elevator.ElevatorIO;
 import frc.robot.subsystems.roller.Roller;
 import frc.robot.subsystems.roller.RollerIO;
 import frc.robot.subsystems.roller.RollerIOSim;
@@ -49,6 +51,7 @@ public class RobotContainer {
   public final Arm arm1;
   public final Arm arm2;
   public final Arm arm3;
+  public final Elevator elevator1;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -66,6 +69,7 @@ public class RobotContainer {
         arm1 = new Arm(new ArmIO() {}, 0);
         arm2 = new Arm(new ArmIO() {}, 1);
         arm3 = new Arm(new ArmIO() {}, 2);
+        elevator1 = new Elevator(new ElevatorIO() {}, 0);
         break;
 
       case SIM:
@@ -75,6 +79,7 @@ public class RobotContainer {
         arm1 = new Arm(new ArmIOSim(0.75, 7, 125, -360000000, 360000000, 0), 0);
         arm2 = new Arm(new ArmIOSim(1, 12, 150, -360000000, 360000000, 1), 1);
         arm3 = new Arm(new ArmIOSim(1, 12, 150, -270, 270, 2), 2);
+        elevator1 = new Elevator(new ElevatorIO() {}, 0);
         break;
 
       default:
@@ -84,6 +89,7 @@ public class RobotContainer {
         arm1 = new Arm(new ArmIO() {}, 0);
         arm2 = new Arm(new ArmIO() {}, 1);
         arm3 = new Arm(new ArmIO() {}, 2);
+        elevator1 = new Elevator(new ElevatorIO() {}, 0);
         break;
     }
 
