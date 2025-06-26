@@ -24,15 +24,15 @@ public class ArmIOSim implements ArmIO {
   private final MechanismLigament2d arm =
       armPivot.append(new MechanismLigament2d("Arm", 1, 0, 6, new Color8Bit(Color.kYellow)));
 
-  public ArmIOSim(double armLengthMeters, double armMassKg, double gearReduction) {
+  public ArmIOSim(double armLengthMeters, double armMassKg, double gearReduction, double minAngleDeg, double maxAngleDeg) {
     sim =
         new SingleJointedArmSim(
             DCMotor.getNEO(1),
             gearReduction,
             SingleJointedArmSim.estimateMOI(armLengthMeters, armMassKg),
             armLengthMeters,
-            Units.degreesToRadians(-360000000),
-            Units.degreesToRadians(360000000),
+            Units.degreesToRadians(minAngleDeg - 2), // add 2 degree of tolerance to allow for PID oscillation
+            Units.degreesToRadians(maxAngleDeg + 2), // add 2 degree of tolerance to allow for PID oscillation
             true,
             0);
     SmartDashboard.putData("Arm_Sim " + instanceNum, mech2d);
@@ -49,6 +49,15 @@ public class ArmIOSim implements ArmIO {
     inputs.positionDeg = Units.radiansToDegrees(MathUtil.angleModulus(sim.getAngleRads()));
     inputs.velocityDegPerSec = Units.radiansToDegrees(sim.getVelocityRadPerSec());
     inputs.appliedVolts = appliedVolts;
+
+    if (sim.hasHitLowerLimit()) {
+      System.out.println("Arm has hit lower limit!");
+      inputs.appliedVolts = 0.0; 
+    }
+    else if (sim.hasHitUpperLimit()) {
+      System.out.println("Arm has hit upper limit!");
+      inputs.appliedVolts = 0.0; 
+    }
 
     // Update mechanism visualization
     arm.setAngle(inputs.positionDeg);

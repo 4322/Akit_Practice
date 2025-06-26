@@ -52,6 +52,7 @@ public class RobotContainer {
   public final Elevator elevator;
   public final Arm arm1;
   public final Arm arm2;
+  public final Arm arm3;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -69,6 +70,7 @@ public class RobotContainer {
         elevator = new Elevator(new ElevatorIOReal());
         arm1 = new Arm(new ArmIO() {}, 0);
         arm2 = new Arm(new ArmIO() {}, 1);
+        arm3 = new Arm(new ArmIO() {}, 2);
         break;
 
       case SIM:
@@ -76,8 +78,9 @@ public class RobotContainer {
         drive = new Drive(new DriveIOSim(), new GyroIO() {});
         roller = new Roller(new RollerIOSim());
         elevator = new Elevator(new ElevatorIOReal());
-        arm1 = new Arm(new ArmIOSim(0.75, 7, 125), 0);
-        arm2 = new Arm(new ArmIOSim(1, 12, 150), 1);
+        arm1 = new Arm(new ArmIOSim(0.75, 7, 125, -360000000, 360000000), 0);
+        arm2 = new Arm(new ArmIOSim(1, 12, 150, -360000000, 360000000), 1);
+        arm3 = new Arm(new ArmIOSim(1, 12, 150, -270, 270), 2);
         break;
 
       default:
@@ -87,6 +90,7 @@ public class RobotContainer {
         elevator = new Elevator(new ElevatorIO() {});
         arm1 = new Arm(new ArmIO() {}, 0);
         arm2 = new Arm(new ArmIO() {}, 1);
+        arm3 = new Arm(new ArmIO() {}, 2);
         break;
     }
 
