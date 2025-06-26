@@ -9,15 +9,15 @@ public class ArmIOSim implements ArmIO {
   private SingleJointedArmSim sim;
   private double appliedVolts = 0.0;
 
-  public ArmIOSim(double armLengthMeters, double armMassKg, double gearReduction) {
+  public ArmIOSim(double armLengthMeters, double armMassKg, double gearReduction, double minAngleDeg, double maxAngleDeg) {
     sim =
         new SingleJointedArmSim(
             DCMotor.getNEO(1),
             gearReduction,
             SingleJointedArmSim.estimateMOI(armLengthMeters, armMassKg),
             armLengthMeters,
-            Units.degreesToRadians(-360000000),
-            Units.degreesToRadians(360000000),
+            Units.degreesToRadians(minAngleDeg),
+            Units.degreesToRadians(maxAngleDeg),
             true,
             0);
   }
@@ -30,6 +30,15 @@ public class ArmIOSim implements ArmIO {
     inputs.positionDeg = Units.radiansToDegrees(MathUtil.angleModulus(sim.getAngleRads()));
     inputs.velocityDegPerSec = Units.radiansToDegrees(sim.getVelocityRadPerSec());
     inputs.appliedVolts = appliedVolts;
+
+    if (sim.hasHitLowerLimit()) {
+      System.out.println("Arm has hit lower limit!");
+      inputs.appliedVolts = 0.0; 
+    }
+    else if (sim.hasHitUpperLimit()) {
+      System.out.println("Arm has hit upper limit!");
+      inputs.appliedVolts = 0.0; 
+    }
   }
 
   @Override

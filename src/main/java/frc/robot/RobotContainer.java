@@ -48,6 +48,7 @@ public class RobotContainer {
   private final Roller roller;
   public final Arm arm1;
   public final Arm arm2;
+  public final Arm arm3;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -64,14 +65,16 @@ public class RobotContainer {
         roller = new Roller(new RollerIOTalonSRX());
         arm1 = new Arm(new ArmIO() {}, 0);
         arm2 = new Arm(new ArmIO() {}, 1);
+        arm3 = new Arm(new ArmIO() {}, 2);
         break;
 
       case SIM:
         // Sim robot, instantiate physics sim IO implementations
         drive = new Drive(new DriveIOSim(), new GyroIO() {});
         roller = new Roller(new RollerIOSim());
-        arm1 = new Arm(new ArmIOSim(0.75, 7, 125), 0);
-        arm2 = new Arm(new ArmIOSim(1, 12, 150), 1);
+        arm1 = new Arm(new ArmIOSim(0.75, 7, 125, -999999999, 999999999), 0);
+        arm2 = new Arm(new ArmIOSim(1, 12, 150, -999999999, 999999999), 1);
+        arm3 = new Arm(new ArmIOSim(1, 12, 150, -270, 270), 2);
         break;
 
       default:
@@ -80,6 +83,7 @@ public class RobotContainer {
         roller = new Roller(new RollerIO() {});
         arm1 = new Arm(new ArmIO() {}, 0);
         arm2 = new Arm(new ArmIO() {}, 1);
+        arm3 = new Arm(new ArmIO() {}, 2);
         break;
     }
 
