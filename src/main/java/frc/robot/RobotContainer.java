@@ -78,9 +78,9 @@ public class RobotContainer {
         drive = new Drive(new DriveIOSim(), new GyroIO() {});
         roller = new Roller(new RollerIOSim());
         elevator = new Elevator(new ElevatorIOReal());
-        arm1 = new Arm(new ArmIOSim(0.75, 7, 125, -360000000, 360000000), 0);
-        arm2 = new Arm(new ArmIOSim(1, 12, 150, -360000000, 360000000), 1);
-        arm3 = new Arm(new ArmIOSim(1, 12, 150, -270, 270), 2);
+        arm1 = new Arm(new ArmIOSim(0.75, 7, 125, -360000000, 360000000, 0), 0);
+        arm2 = new Arm(new ArmIOSim(1, 12, 150, -360000000, 360000000, 1), 1);
+        arm3 = new Arm(new ArmIOSim(1, 12, 150, -270, 270, 2), 2);
         break;
 
       default:

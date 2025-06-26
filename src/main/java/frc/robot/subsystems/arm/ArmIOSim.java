@@ -14,8 +14,6 @@ import edu.wpi.first.wpilibj.util.Color8Bit;
 public class ArmIOSim implements ArmIO {
   private SingleJointedArmSim sim;
   private double appliedVolts = 0.0;
-  private static int instanceNum =
-      0; // Line needed due to multiple instantiations of this class causing log overlap
 
   private final Mechanism2d mech2d = new Mechanism2d(2, 2);
   private final MechanismRoot2d armPivot = mech2d.getRoot("ArmPivot", 1, 1);
@@ -24,19 +22,26 @@ public class ArmIOSim implements ArmIO {
   private final MechanismLigament2d arm =
       armPivot.append(new MechanismLigament2d("Arm", 1, 0, 6, new Color8Bit(Color.kYellow)));
 
-  public ArmIOSim(double armLengthMeters, double armMassKg, double gearReduction, double minAngleDeg, double maxAngleDeg) {
+  public ArmIOSim(
+      double armLengthMeters,
+      double armMassKg,
+      double gearReduction,
+      double minAngleDeg,
+      double maxAngleDeg,
+      int instanceNum) {
     sim =
         new SingleJointedArmSim(
             DCMotor.getNEO(1),
             gearReduction,
             SingleJointedArmSim.estimateMOI(armLengthMeters, armMassKg),
             armLengthMeters,
-            Units.degreesToRadians(minAngleDeg - 2), // add 2 degree of tolerance to allow for PID oscillation
-            Units.degreesToRadians(maxAngleDeg + 2), // add 2 degree of tolerance to allow for PID oscillation
+            Units.degreesToRadians(
+                minAngleDeg - 2), // add 2 degree of tolerance to allow for PID oscillation
+            Units.degreesToRadians(
+                maxAngleDeg + 2), // add 2 degree of tolerance to allow for PID oscillation
             true,
             0);
     SmartDashboard.putData("Arm_Sim " + instanceNum, mech2d);
-    instanceNum++;
   }
 
   @Override
@@ -52,11 +57,10 @@ public class ArmIOSim implements ArmIO {
 
     if (sim.hasHitLowerLimit() && inputs.appliedVolts < 0) {
       System.out.println("Arm has hit lower limit!");
-      inputs.appliedVolts = 0.0; 
-    }
-    else if (sim.hasHitUpperLimit() && inputs.appliedVolts > 0) {
+      inputs.appliedVolts = 0.0;
+    } else if (sim.hasHitUpperLimit() && inputs.appliedVolts > 0) {
       System.out.println("Arm has hit upper limit!");
-      inputs.appliedVolts = 0.0; 
+      inputs.appliedVolts = 0.0;
     }
 
     // Update mechanism visualization
