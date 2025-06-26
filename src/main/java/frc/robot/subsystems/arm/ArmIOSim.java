@@ -16,8 +16,8 @@ public class ArmIOSim implements ArmIO {
             gearReduction,
             SingleJointedArmSim.estimateMOI(armLengthMeters, armMassKg),
             armLengthMeters,
-            Units.degreesToRadians(minAngleDeg),
-            Units.degreesToRadians(maxAngleDeg),
+            Units.degreesToRadians(minAngleDeg - 2), // add 2 degree of tolerance to allow for PID oscillation
+            Units.degreesToRadians(maxAngleDeg + 2), // add 2 degree of tolerance to allow for PID oscillation
             true,
             0);
   }
