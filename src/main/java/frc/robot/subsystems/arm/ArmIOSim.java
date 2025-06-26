@@ -27,15 +27,15 @@ public class ArmIOSim implements ArmIO {
     sim.setInputVoltage(appliedVolts);
     sim.update(0.02);
 
-    inputs.positionDeg = Units.radiansToDegrees(MathUtil.angleModulus(sim.getAngleRads()));
+    inputs.positionDeg = Units.radiansToDegrees(sim.getAngleRads());
     inputs.velocityDegPerSec = Units.radiansToDegrees(sim.getVelocityRadPerSec());
     inputs.appliedVolts = appliedVolts;
 
-    if (sim.hasHitLowerLimit()) {
+    if (sim.hasHitLowerLimit() && inputs.appliedVolts < 0) {
       System.out.println("Arm has hit lower limit!");
       inputs.appliedVolts = 0.0; 
     }
-    else if (sim.hasHitUpperLimit()) {
+    else if (sim.hasHitUpperLimit() && inputs.appliedVolts > 0) {
       System.out.println("Arm has hit upper limit!");
       inputs.appliedVolts = 0.0; 
     }
