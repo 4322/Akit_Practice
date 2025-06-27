@@ -32,7 +32,8 @@ public class Arm extends SubsystemBase {
     io.updateInputs(inputs);
     Logger.processInputs("Arm " + instanceNum, inputs);
 
-    if (commandsScheduled < 6 && !armCommands.isScheduled()) {
+    if (commandsScheduled < 6 && !armCommands.isScheduled() && armCommands.isInitedYet()) {
+      System.out.println("Rescheduled command | Time: " + commandsScheduled);
       commandsScheduled++;
       armCommands.schedule();
     }

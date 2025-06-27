@@ -1,11 +1,12 @@
 package frc.robot.commands;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.arm.Arm;
 
 public class ArmCommands extends Command {
-  private double kP = 0.1;
+  private double kP = 0.6;
   private double kI = 0;
   private double kD = 0;
 
@@ -16,6 +17,8 @@ public class ArmCommands extends Command {
   private static int instance;
   private int ownInstance;
   private int intializedTimes = 0;
+
+  private boolean isInited = false;
 
   double[] queuedPositions = {45, 135, 0, -179, 179, -90, 90};
   int timesRun = 0;
@@ -34,6 +37,7 @@ public class ArmCommands extends Command {
 
   @Override
   public void initialize() {
+    isInited = true;
     System.out.println("Initialized " + intializedTimes + " times");
     intializedTimes++;
     System.out.println("Set point to " + queuedPositions[timesRun]);
@@ -52,9 +56,13 @@ public class ArmCommands extends Command {
 
   @Override
   public boolean isFinished() {
-    return setPoint - 1 < currentPoint && currentPoint < setPoint + 1;
+    return MathUtil.isNear(setPoint, currentPoint, 1);
   }
 
   @Override
   public void end(boolean interrupted) {}
+
+  public boolean isInitedYet() {
+    return isInited;
+  }
 }
