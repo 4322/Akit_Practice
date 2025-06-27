@@ -10,19 +10,19 @@ public class Elevator extends SubsystemBase {
 
   private int instanceNum;
   private double targetPosition;
-  private double currentPosition = 0;
+  private double currentPosition = 1;
 
   private Timer timer = new Timer();
 
-  private timePast time = timePast.ZERO_SECONDS;
-
-  private enum timePast {
+  private enum Timeelapsed {
     ZERO_SECONDS,
     TWO_SECONDS,
     SIX_SECONDS,
     TEN_SECONDS,
     FIFTEEN_SECONDS
   }
+
+  private Timeelapsed currentTime = Timeelapsed.ZERO_SECONDS;
 
   public Elevator(ElevatorIO io, int instanceNum) {
     this.io = io;
@@ -31,9 +31,11 @@ public class Elevator extends SubsystemBase {
 
   public void teleopInit() {
     timer.restart();
+    timer.start();
   }
 
-  public void teleopperiodic() {
+  @Override
+  public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Elevator " + instanceNum, inputs);
 
@@ -42,26 +44,25 @@ public class Elevator extends SubsystemBase {
     io.setCurrentPosition(currentPosition);
     io.setTargetPosition(targetPosition);
 
-    this.currentPosition =
-        this.currentPosition + 0.05 * (this.targetPosition - this.currentPosition);
-
-    switch (time) {
+    switch (currentTime) {
       case ZERO_SECONDS:
         if (timer.hasElapsed(2)) {
-          this.targetPosition = 0.4;
-          time = timePast.TWO_SECONDS;
+          currentPosition = 0.4;
+          System.out.println("Elevator moving to position 0.4");
+          currentTime = Timeelapsed.TWO_SECONDS;
         }
         break;
       case TWO_SECONDS:
         if (timer.hasElapsed(6)) {
-          this.targetPosition = 1;
-          time = timePast.SIX_SECONDS;
+          currentPosition = 1;
+          System.out.println("Elevator moving to position 0.4");
+          currentTime = Timeelapsed.SIX_SECONDS;
         }
         break;
       case SIX_SECONDS:
         if (timer.hasElapsed(10)) {
-          this.targetPosition = 0.1;
-          time = timePast.TEN_SECONDS;
+          currentPosition = 0.1;
+          currentTime = Timeelapsed.TEN_SECONDS;
         }
         break;
       case TEN_SECONDS:
