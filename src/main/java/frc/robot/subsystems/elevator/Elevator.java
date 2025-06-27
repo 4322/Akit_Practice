@@ -1,9 +1,8 @@
 package frc.robot.subsystems.elevator;
 
-import org.littletonrobotics.junction.Logger;
-
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.littletonrobotics.junction.Logger;
 
 public class Elevator extends SubsystemBase {
   private ElevatorIO io;
@@ -31,7 +30,7 @@ public class Elevator extends SubsystemBase {
   }
 
   public void teleopInit() {
-   timer.restart();
+    timer.restart();
   }
 
   @Override
@@ -75,5 +74,4 @@ public class Elevator extends SubsystemBase {
         break;
     }
   }
-
 }
