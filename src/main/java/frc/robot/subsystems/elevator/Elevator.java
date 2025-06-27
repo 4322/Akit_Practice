@@ -47,7 +47,7 @@ public class Elevator extends SubsystemBase {
 
     this.currentPosition =
         this.currentPosition + 0.05 * (this.targetPosition - this.currentPosition);
-    this.message = timer.get() + " | Position: " + this.currentPosition; 
+    this.message = timer.get() + " | Position: " + this.currentPosition;
 
     switch (time) {
       case ZERO_SECONDS:
@@ -79,8 +79,7 @@ public class Elevator extends SubsystemBase {
 
     if (halfSecondTimer.hasElapsed(0.5)) {
       halfSecondTimer.reset();
-      io.setStatus(message);
       System.out.println(message);
     }
-  }
+  } //"C:\Users\ryanh_3pyqfjr\Local Documents\FRC4322\AdvantageKit Logs\Log.wpilog"
 }
