@@ -3,6 +3,7 @@ package frc.robot.subsystems.elevator;
 public class ElevatorIOSim implements ElevatorIO {
   private double targetPosition;
   private double currentPosition;
+  private String message;
 
   private int instanceNum;
 
@@ -14,6 +15,7 @@ public class ElevatorIOSim implements ElevatorIO {
   public void updateInputs(ElevatorIOInputs inputs) {
     inputs.targetPosition = this.targetPosition;
     inputs.currentPosition = this.currentPosition;
+    inputs.message = this.message;
     // System.out.println("Current position: " + this.currentPosition);
     // System.out.println("Target position: " + this.targetPosition);
   }
@@ -26,5 +28,10 @@ public class ElevatorIOSim implements ElevatorIO {
   @Override
   public void setCurrentPosition(double currentPosition) {
     this.currentPosition = currentPosition;
+  }
+
+  @Override
+  public void setStatus(String message) {
+    this.message = message;
   }
 }
