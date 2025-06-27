@@ -36,7 +36,6 @@ public class Robot extends LoggedRobot {
   private RobotContainer m_RobotContainer;
 
   public Robot() {
-    m_RobotContainer = new RobotContainer();
     // Record metadata
     Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
     Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
@@ -154,7 +153,7 @@ public class Robot extends LoggedRobot {
       autonomousCommand.cancel();
     }
 
-    m_RobotContainer.elevator1.teleopInit();
+    robotContainer.elevator1.teleopInit();
   }
 
   /** This function is called periodically during operator control. */
