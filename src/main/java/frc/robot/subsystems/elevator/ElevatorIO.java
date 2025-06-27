@@ -2,18 +2,16 @@ package frc.robot.subsystems.elevator;
 
 import org.littletonrobotics.junction.AutoLog;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-public class ElevatorIO extends SubsystemBase {
-      @AutoLog
+public interface ElevatorIO {
+  @AutoLog
   public static class ElevatorIOInputs {
-    public double positionDeg = 0.0;
-    public double height = 0.0;
-    public double appliedVolts = 0.0;
+    public double currentPosition = 0.0;
+    public double targetPosition = 0.0;
   }
 
-  public void updateInputs(ElevatorIOInputs inputs) {}
+  public default void updateInputs(ElevatorIOInputs inputs) {}
 
-  public void setVoltage(double volts) {}
+  public default void setCurrentPosition(double currentPosition) {}
 
-  public void setHeight(double height) {}
+  public default void setTargetPosition(double targetPosition) {}
 }

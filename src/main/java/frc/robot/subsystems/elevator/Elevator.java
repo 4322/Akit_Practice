@@ -1,76 +1,79 @@
 package frc.robot.subsystems.elevator;
 
-
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Elevator extends SubsystemBase {
-    private ElevatorIO io;
-    private ElevatorIOInputsAutoLogged inputs = new ElevatorIOInputsAutoLogged();
-    
-    private Timer hewoTimer = new Timer();
+  private ElevatorIO io;
+  private ElevatorIOInputsAutoLogged inputs = new ElevatorIOInputsAutoLogged();
 
-    private int instanceNum;
+  private int instanceNum;
+  private double targetPosition;
+  private double currentPosition = 0;
 
-    private enum time {
-        ZERO_SECONDS,
-        TWO_SECONDS,
-        SIX_SECONDS,
-        TEN_SECONDS,
-        FIFTEEN_SECONDS
-    }
+  private Timer timer = new Timer();
 
-    time currentTime = time.ZERO_SECONDS;
-   
-    public Elevator(ElevatorIO io, int instanceNum) {
-      this.io = io;
-      this.instanceNum = instanceNum;
-    }
-  
-    @Override
-    public void periodic() {
-      io.updateInputs(inputs);
-      Logger.processInputs("Elevator " + instanceNum, inputs);
+  private timePast time = timePast.ZERO_SECONDS;
 
-    // Example: get current time state (replace with actual logic as needed) // TODO: Replace with real logic
+  private enum timePast {
+    ZERO_SECONDS,
+    TWO_SECONDS,
+    SIX_SECONDS,
+    TEN_SECONDS,
+    FIFTEEN_SECONDS
+  }
 
-    switch (currentTime) {
-      case ZERO_SECONDS: 
-    if (hewoTimer.hasElapsed(2)) {
-        currentTime = time.TWO_SECONDS;
-    }
-      break;
+  public Elevator(ElevatorIO io, int instanceNum) {
+    this.io = io;
+    this.instanceNum = instanceNum;
+  }
+
+  public void teleopInit() {
+    timer.restart();
+  }
+
+  @Override
+  public void periodic() {
+    io.updateInputs(inputs);
+    Logger.processInputs("Elevator " + instanceNum, inputs);
+
+    // System.out.println("Current position: " + this.currentPosition);
+    // System.out.println("Target position: " + this.targetPosition);
+    io.setCurrentPosition(currentPosition);
+    io.setTargetPosition(targetPosition);
+
+    this.currentPosition =
+        this.currentPosition + 0.05 * (this.targetPosition - this.currentPosition);
+
+    switch (time) {
+      case ZERO_SECONDS:
+        if (timer.hasElapsed(2)) {
+          this.targetPosition = 0.4;
+          time = timePast.TWO_SECONDS;
+        }
+        break;
       case TWO_SECONDS:
-        if (hewoTimer.hasElapsed(6)) {
-            currentTime = time.SIX_SECONDS;}
-
-       break;
+        if (timer.hasElapsed(6)) {
+          this.targetPosition = 1;
+          time = timePast.SIX_SECONDS;
+        }
+        break;
       case SIX_SECONDS:
-            if (hewoTimer.hasElapsed(10)) {
-                currentTime = time.TEN_SECONDS;
-            }
-      break;
+        if (timer.hasElapsed(10)) {
+          this.targetPosition = 0.1;
+          time = timePast.TEN_SECONDS;
+        }
+        break;
       case TEN_SECONDS:
-            if (hewoTimer.hasElapsed(15)) {
-                currentTime = time.FIFTEEN_SECONDS;
-            }
-      break;
+        if (timer.hasElapsed(15)) {
+          System.exit(0);
+        }
+        break;
       case FIFTEEN_SECONDS:
-            if (hewoTimer.hasElapsed(20)) {
-                currentTime = time.ZERO_SECONDS;
-                hewoTimer.reset();
-            }
-      break;
+        break;
     }
-    }
-  
-    public void setVoltage(double voltage) {
-      io.setVoltage(voltage);
-    }
-  
-    public void setHeight(double targetHeight) {
-      io.setHeight(targetHeight);
-    }
+  }
+
 }

@@ -65,7 +65,19 @@ public class Robot extends LoggedRobot {
       case SIM:
         // Running a physics simulator, log to NT
         Logger.addDataReceiver(
-            new WPILOGWriter()); // TODO: Add file path where you want to save logs as parameter for
+            new WPILOGWriter(
+                "C:\\Users\\ryanh_3pyqfjr\\Local Documents\\FRC4322\\AdvantageKit Logs")); // TODO:
+        // Add
+        // file
+        // path
+        // where
+        // you
+        // want
+        // to
+        // save
+        // logs
+        // as
+        // parameter for
         // WPILOGWriter()
         Logger.addDataReceiver(new NT4Publisher());
         break;
@@ -140,6 +152,8 @@ public class Robot extends LoggedRobot {
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
+
+    m_RobotContainer.elevator1.teleopInit();
   }
 
   /** This function is called periodically during operator control. */

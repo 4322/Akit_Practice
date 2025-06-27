@@ -1,9 +1,29 @@
 package frc.robot.subsystems.elevator;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+public class ElevatorIOSim implements ElevatorIO {
+  private double targetPosition;
+  private double currentPosition;
 
-public class ElevatorIOsim extends SubsystemBase{
-    private double targetHeight = 0.0;
-    private double appliedVolts = 0.0;
+  private int instanceNum;
+
+  public ElevatorIOSim(int instanceNum) {
+    this.instanceNum = instanceNum;
+  }
+
+  @Override
+  public void updateInputs(ElevatorIOInputs inputs) {
+    inputs.targetPosition = this.targetPosition;
+    inputs.currentPosition = this.currentPosition;
+    //System.out.println("Current position: " + this.currentPosition);
+    //System.out.println("Target position: " + this.targetPosition);
+  }
+
   
+  public void setTargetPosition(double targetPosition) {
+    this.targetPosition = targetPosition;
+  }
+
+  public void setCurrentPosition(double currentPosition) {
+    this.currentPosition = currentPosition;
+  }
 }
