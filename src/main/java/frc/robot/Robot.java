@@ -66,7 +66,7 @@ public class Robot extends LoggedRobot {
         // Running a physics simulator, log to NT
         Logger.addDataReceiver(
             new WPILOGWriter(
-                "C:\\Users\\ryanh_3pyqfjr\\Local Documents\\FRC4322\\AdvantageKit Logs")); // TODO:
+                "C:\\Users\\super\\Clockwork 2025\\AdvantageKit Logs")); // TODO:
         // Add
         // file
         // path
@@ -152,8 +152,6 @@ public class Robot extends LoggedRobot {
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
-
-  
   }
 
   /** This function is called periodically during operator control. */
