@@ -33,8 +33,10 @@ import org.littletonrobotics.urcl.URCL;
 public class Robot extends LoggedRobot {
   private Command autonomousCommand;
   private RobotContainer robotContainer;
+  private RobotContainer m_RobotContainer;
 
   public Robot() {
+    m_RobotContainer = new RobotContainer();
     // Record metadata
     Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
     Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
@@ -151,6 +153,8 @@ public class Robot extends LoggedRobot {
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
+
+    m_RobotContainer.elevator1.teleopInit();
   }
 
   /** This function is called periodically during operator control. */
