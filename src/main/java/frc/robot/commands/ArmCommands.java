@@ -52,7 +52,7 @@ public class ArmCommands extends Command {
 
   @Override
   public boolean isFinished() {
-    return setPoint - 5 < currentPoint && currentPoint < setPoint + 5;
+    return setPoint - 1 < currentPoint && currentPoint < setPoint + 1;
   }
 
   @Override
