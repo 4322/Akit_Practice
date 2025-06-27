@@ -1,6 +1,5 @@
 package frc.robot.commands;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.arm.Arm;
@@ -27,7 +26,6 @@ public class ArmCommands extends Command {
   int timesRun = 0;
 
   PIDController pid = new PIDController(0, 0, 0);
-
   private Arm arm;
 
   public ArmCommands(Arm arm) {
@@ -37,6 +35,7 @@ public class ArmCommands extends Command {
     this.arm = arm;
     addRequirements(arm);
     pid.enableContinuousInput(-180.0, 180.0);
+    pid.setTolerance(1);
   }
 
   @Override
@@ -65,7 +64,7 @@ public class ArmCommands extends Command {
 
   @Override
   public boolean isFinished() {
-    return MathUtil.isNear(setPoint, currentPoint, 5);
+    return pid.atSetpoint();
   }
 
   @Override
