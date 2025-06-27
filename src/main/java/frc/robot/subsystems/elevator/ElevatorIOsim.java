@@ -14,11 +14,10 @@ public class ElevatorIOSim implements ElevatorIO {
   public void updateInputs(ElevatorIOInputs inputs) {
     inputs.targetPosition = this.targetPosition;
     inputs.currentPosition = this.currentPosition;
-    //System.out.println("Current position: " + this.currentPosition);
-    //System.out.println("Target position: " + this.targetPosition);
+    // System.out.println("Current position: " + this.currentPosition);
+    // System.out.println("Target position: " + this.targetPosition);
   }
 
-  
   public void setTargetPosition(double targetPosition) {
     this.targetPosition = targetPosition;
   }
