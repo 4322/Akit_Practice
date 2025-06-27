@@ -10,7 +10,7 @@ public class Elevator extends SubsystemBase {
 
   private int instanceNum;
   private double targetPosition;
-  private double currentPosition = 1;
+  private double currentPosition = 0;
 
   private Timer timer = new Timer();
 
@@ -30,7 +30,7 @@ public class Elevator extends SubsystemBase {
   }
 
   public void teleopInit() {
-    timer.restart();
+    timer.reset();
     timer.start();
   }
 
@@ -43,25 +43,25 @@ public class Elevator extends SubsystemBase {
     // System.out.println("Target position: " + this.targetPosition);
     io.setCurrentPosition(currentPosition);
     io.setTargetPosition(targetPosition);
+    this.currentPosition =
+        (this.currentPosition + 0.05 * (this.targetPosition - this.currentPosition));
 
     switch (currentTime) {
       case ZERO_SECONDS:
         if (timer.hasElapsed(2)) {
-          currentPosition = 0.4;
-          System.out.println("Elevator moving to position 0.4");
+          targetPosition = 0.4;
           currentTime = Timeelapsed.TWO_SECONDS;
         }
         break;
       case TWO_SECONDS:
         if (timer.hasElapsed(6)) {
-          currentPosition = 1;
-          System.out.println("Elevator moving to position 0.4");
+          targetPosition = 1;
           currentTime = Timeelapsed.SIX_SECONDS;
         }
         break;
       case SIX_SECONDS:
         if (timer.hasElapsed(10)) {
-          currentPosition = 0.1;
+          targetPosition = 0.1;
           currentTime = Timeelapsed.TEN_SECONDS;
         }
         break;
