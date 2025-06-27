@@ -33,8 +33,7 @@ public class Elevator extends SubsystemBase {
     timer.restart();
   }
 
-  @Override
-  public void periodic() {
+  public void teleopperiodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Elevator " + instanceNum, inputs);
 
