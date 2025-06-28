@@ -1,27 +1,27 @@
 package frc.robot.subsystems.arm;
 
-import org.littletonrobotics.junction.Logger;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.commands.ArmCommands;
+import org.littletonrobotics.junction.Logger;
+
 public class Arm extends SubsystemBase {
   // 0 degrees is straight ahead and positive is up. The position is reported as +/- 180 degrees.
 
   private ArmIO io;
   private ArmIOInputsAutoLogged inputs = new ArmIOInputsAutoLogged();
-  private ArmCommands commands = new ArmCommands();
   private int instanceNum;
+  private ArmCommands armCommands = new ArmCommands(this);
 
   public Arm(ArmIO io, int instanceNum) {
     this.io = io;
     this.instanceNum = instanceNum;
   }
 
-
   @Override
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Arm " + instanceNum, inputs);
+    armCommands.schedule();
   }
 
   public void setVoltage(double voltage) {

@@ -51,7 +51,7 @@ public class ArmIOSim implements ArmIO {
     sim.update(0.02);
 
     // Update inputs
-    inputs.positionDeg = Units.radiansToDegrees(sim.getAngleRads());
+    inputs.positionDeg = Units.radiansToDegrees(MathUtil.angleModulus(sim.getAngleRads()));
     inputs.velocityDegPerSec = Units.radiansToDegrees(sim.getVelocityRadPerSec());
     inputs.appliedVolts = appliedVolts;
 
