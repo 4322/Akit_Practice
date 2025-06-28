@@ -13,6 +13,7 @@ public class Elevator extends SubsystemBase {
   private double currentPosition = 0;
 
   private Timer timer = new Timer();
+  private Timer hewoTimer = new Timer();
 
   private enum Timeelapsed {
     ZERO_SECONDS,
@@ -32,6 +33,8 @@ public class Elevator extends SubsystemBase {
   public void teleopInit() {
     timer.reset();
     timer.start();
+    hewoTimer.reset();
+    hewoTimer.start();
   }
 
   @Override
@@ -45,7 +48,13 @@ public class Elevator extends SubsystemBase {
     io.setTargetPosition(targetPosition);
     this.currentPosition =
         (this.currentPosition + 0.05 * (this.targetPosition - this.currentPosition));
-
+    double print = timer.get();
+    if (hewoTimer.hasElapsed(0.5)) {
+      System.out.println("Elevator " + instanceNum + " current position: " + this.currentPosition);
+      System.out.println(
+          "Elevator " + instanceNum + " current time elapsed: " + print + " seconds");
+      hewoTimer.reset();
+    }
     switch (currentTime) {
       case ZERO_SECONDS:
         if (timer.hasElapsed(2)) {
