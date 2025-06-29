@@ -16,18 +16,11 @@ public class ArmCommands extends Command {
   private LoggedNetworkNumber kI = new LoggedNetworkNumber("Arm/kI", 0);
   private LoggedNetworkNumber kD = new LoggedNetworkNumber("Arm/kD", 0.02);
 
-  private double setpoint = 0.0;
-  private double currentAngle;
-  private double output;
-  private double instances = 1;
+
   private PIDController armController = new PIDController(0, 0, 0);
   private Arm arm;
-  private static int instance;
-  private int ownInstance;
-  private int intializedTimes = 0;
   private Timer timer = new Timer();
 
-  private boolean isInited = false;
 
   public enum ArmState {
     DEG_NONE,
