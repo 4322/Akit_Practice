@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
-import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.arm.Arm;
@@ -15,7 +16,8 @@ public class ArmCommands extends Command {
   private LoggedNetworkNumber kI = new LoggedNetworkNumber("Arm/kI", 0);
   private LoggedNetworkNumber kD = new LoggedNetworkNumber("Arm/kD", 0.04);
 
-  private PIDController armController = new PIDController(0, 0, 0);
+  private TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(1.7, 2);
+  private ProfiledPIDController armController = new ProfiledPIDController(1, 0, 0, constraints);
   private Arm arm;
   private Timer timer = new Timer();
 
@@ -34,9 +36,9 @@ public class ArmCommands extends Command {
 
   public ArmCommands(Arm arm) {
     this.arm = arm;
-
+    this.armController = armController;
+    armController.enableContinuousInput(-Math.PI, Math.PI);
     addRequirements(arm);
-    armController.enableContinuousInput(-180.0, 180.0);
   }
 
   @Override

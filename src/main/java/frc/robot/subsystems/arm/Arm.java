@@ -22,6 +22,7 @@ public class Arm extends SubsystemBase {
     io.updateInputs(inputs);
     Logger.processInputs("Arm " + instanceNum, inputs);
     armCommands.schedule();
+    this.setVoltage(10);
   }
 
   public void setVoltage(double voltage) {
