@@ -1,26 +1,23 @@
 package frc.robot.commands;
 
-import org.littletonrobotics.junction.Logger;
-import org.littletonrobotics.junction.networktables.LoggedNetworkNumber;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.arm.Arm;
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.networktables.LoggedNetworkNumber;
 
 public class ArmCommands extends Command {
 
   private LoggedNetworkNumber requestedPositionDeg =
       new LoggedNetworkNumber("Arm/RequestedPositionDeg", 0.0);
-  private LoggedNetworkNumber kP = new LoggedNetworkNumber("Arm/kP", 1.7);
+  private LoggedNetworkNumber kP = new LoggedNetworkNumber("Arm/kP", 1.9);
   private LoggedNetworkNumber kI = new LoggedNetworkNumber("Arm/kI", 0);
-  private LoggedNetworkNumber kD = new LoggedNetworkNumber("Arm/kD", 0.02);
-
+  private LoggedNetworkNumber kD = new LoggedNetworkNumber("Arm/kD", 0.04);
 
   private PIDController armController = new PIDController(0, 0, 0);
   private Arm arm;
   private Timer timer = new Timer();
-
 
   public enum ArmState {
     DEG_NONE,
@@ -53,7 +50,7 @@ public class ArmCommands extends Command {
     double output = armController.calculate(currentPosition, requestedPosition);
     arm.setVoltage(output);
 
-    switch (armState) {
+      switch (armState) {
       case DEG_NONE:
         armState = ArmState.DEG_45;
         break;
@@ -66,8 +63,7 @@ public class ArmCommands extends Command {
             timer.stop();
             timer.reset();
           }
-        }
-        else {
+        } else {
           timer.stop();
           timer.reset();
         }
@@ -81,8 +77,7 @@ public class ArmCommands extends Command {
             timer.stop();
             timer.reset();
           }
-        }
-        else {
+        } else {
           timer.stop();
           timer.reset();
         }
@@ -96,8 +91,7 @@ public class ArmCommands extends Command {
             timer.stop();
             timer.reset();
           }
-        }
-        else {
+        } else {
           timer.stop();
           timer.reset();
         }
@@ -111,8 +105,7 @@ public class ArmCommands extends Command {
             timer.stop();
             timer.reset();
           }
-        }
-        else {
+        } else {
           timer.stop();
           timer.reset();
         }
@@ -126,8 +119,7 @@ public class ArmCommands extends Command {
             timer.stop();
             timer.reset();
           }
-        }
-        else {
+        } else {
           timer.stop();
           timer.reset();
         }
@@ -141,8 +133,7 @@ public class ArmCommands extends Command {
             timer.stop();
             timer.reset();
           }
-        }
-        else {
+        } else {
           timer.stop();
           timer.reset();
         }
@@ -151,7 +142,7 @@ public class ArmCommands extends Command {
         requestedPositionDeg.set(90.0);
         if (currentPosition <= 90.1 || currentPosition >= 89.9) {}
         break;
-    }
+      }
     Logger.recordOutput("Arm/requestedPosition", requestedPosition);
     Logger.recordOutput("Arm/calculatedVolts", output);
   }
