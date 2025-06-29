@@ -1,11 +1,12 @@
 package frc.robot.commands;
 
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.networktables.LoggedNetworkNumber;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.arm.Arm;
-import org.littletonrobotics.junction.Logger;
-import org.littletonrobotics.junction.networktables.LoggedNetworkNumber;
 
 public class ArmCommands extends Command {
 
@@ -73,6 +74,10 @@ public class ArmCommands extends Command {
             timer.reset();
           }
         }
+        else {
+          timer.stop();
+          timer.reset();
+        }
         break;
       case DEG_135:
         requestedPositionDeg.set(135.0);
@@ -83,6 +88,10 @@ public class ArmCommands extends Command {
             timer.stop();
             timer.reset();
           }
+        }
+        else {
+          timer.stop();
+          timer.reset();
         }
         break;
       case DEG_0:
@@ -95,6 +104,10 @@ public class ArmCommands extends Command {
             timer.reset();
           }
         }
+        else {
+          timer.stop();
+          timer.reset();
+        }
         break;
       case DEG_NEG_179:
         requestedPositionDeg.set(-179.0);
@@ -105,6 +118,10 @@ public class ArmCommands extends Command {
             timer.stop();
             timer.reset();
           }
+        }
+        else {
+          timer.stop();
+          timer.reset();
         }
         break;
       case DEG_179:
@@ -117,6 +134,10 @@ public class ArmCommands extends Command {
             timer.reset();
           }
         }
+        else {
+          timer.stop();
+          timer.reset();
+        }
         break;
       case DEG_NEG_90:
         requestedPositionDeg.set(-90.0);
@@ -127,6 +148,10 @@ public class ArmCommands extends Command {
             timer.stop();
             timer.reset();
           }
+        }
+        else {
+          timer.stop();
+          timer.reset();
         }
         break;
       case DEG_90:
