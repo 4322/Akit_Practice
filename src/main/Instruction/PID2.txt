@@ -1,0 +1,6 @@
+Same as exercise 1, except command the Arm2 subsystem, which is heavier and has more inertia.
+
+The arm starts at 0 degrees.
+
+Invoke your Command with the following arm positions. As soon as a position is reached, start a command to go to the next position using the least movement possible.
+	45 degrees, 135 degrees, 0 degrees, -179 degrees, 179 degrees, -90 degrees, 90 degrees
