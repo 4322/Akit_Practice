@@ -53,7 +53,7 @@ public class ArmCommands extends Command {
     double output = armController.calculate(currentPosition, requestedPosition);
     arm.setVoltage(output);
 
-    /* switch (armState) {
+     switch (armState) {
       case DEG_NONE:
         armState = ArmState.DEG_45;
         break;
@@ -145,7 +145,7 @@ public class ArmCommands extends Command {
         requestedPositionDeg.set(90.0);
         if (currentPosition <= 90.1 || currentPosition >= 89.9) {}
         break;
-    }*/
+    }
     Logger.recordOutput("Arm/requestedPosition", requestedPosition);
     Logger.recordOutput("Arm/calculatedVolts", output);
   }
