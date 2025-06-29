@@ -12,11 +12,11 @@ public class ArmCommands extends Command {
 
   private LoggedNetworkNumber requestedPositionDeg =
       new LoggedNetworkNumber("Arm/RequestedPositionDeg", 0.0);
-  private LoggedNetworkNumber kP = new LoggedNetworkNumber("Arm/kP", 1.9);
+  private LoggedNetworkNumber kP = new LoggedNetworkNumber("Arm/kP", 1.5);
   private LoggedNetworkNumber kI = new LoggedNetworkNumber("Arm/kI", 0);
-  private LoggedNetworkNumber kD = new LoggedNetworkNumber("Arm/kD", 0.04);
+  private LoggedNetworkNumber kD = new LoggedNetworkNumber("Arm/kD", 0.05);
 
-  private TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(100, 100);
+  private TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(10000, 10000);
   private ProfiledPIDController armController = new ProfiledPIDController(0, 0, 0, constraints);
   private Arm arm;
   private Timer timer = new Timer();
