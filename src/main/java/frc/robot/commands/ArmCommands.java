@@ -16,7 +16,7 @@ public class ArmCommands extends Command {
   private LoggedNetworkNumber kI = new LoggedNetworkNumber("Arm/kI", 0);
   private LoggedNetworkNumber kD = new LoggedNetworkNumber("Arm/kD", 0.04);
 
-  private TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(1.7, 2);
+  private TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(100, 100);
   private ProfiledPIDController armController = new ProfiledPIDController(0, 0, 0, constraints);
   private Arm arm;
   private Timer timer = new Timer();
@@ -52,7 +52,7 @@ public class ArmCommands extends Command {
     double output = armController.calculate(currentPosition, requestedPosition);
     arm.setVoltage(output);
 
-    /*switch (armState) {
+    switch (armState) {
       case DEG_NONE:
         armState = ArmState.DEG_45;
         break;
@@ -144,7 +144,7 @@ public class ArmCommands extends Command {
         requestedPositionDeg.set(90.0);
         if (currentPosition <= 90.1 || currentPosition >= 89.9) {}
         break;
-    } */
+    }
     Logger.recordOutput("Arm/requestedPosition", requestedPosition);
     Logger.recordOutput("Arm/calculatedVolts", output);
   }
