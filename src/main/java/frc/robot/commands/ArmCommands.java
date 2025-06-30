@@ -1,13 +1,12 @@
 package frc.robot.commands;
 
-import org.littletonrobotics.junction.Logger;
-import org.littletonrobotics.junction.networktables.LoggedNetworkNumber;
-
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.arm.Arm;
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.networktables.LoggedNetworkNumber;
 
 public class ArmCommands extends Command {
 
@@ -38,7 +37,6 @@ public class ArmCommands extends Command {
   public ArmCommands(Arm arm) {
     this.arm = arm;
     this.armController = armController;
-    armController.enableContinuousInput(-180, 180);
     addRequirements(arm);
   }
 
@@ -53,7 +51,7 @@ public class ArmCommands extends Command {
     double output = armController.calculate(currentPosition, requestedPosition);
     arm.setVoltage(output);
 
-     switch (armState) {
+    switch (armState) {
       case DEG_NONE:
         armState = ArmState.DEG_45;
         break;
