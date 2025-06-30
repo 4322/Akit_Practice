@@ -29,7 +29,10 @@ public class ArmCommands extends Command {
     DEG_NEG_179,
     DEG_179,
     DEG_NEG_90,
-    DEG_90
+    DEG_90,
+    DEG_NEG_45,
+    DEG_180,
+    DEG_85,
   }
 
   ArmState armState = ArmState.DEG_NONE;
@@ -54,18 +57,25 @@ public class ArmCommands extends Command {
 
     switch (armState) {
       case DEG_NONE:
-        armState = ArmState.DEG_45;
         requestedPositionDeg.set(0.0);
-        if (requestedPosition <= 0.1 || currentPosition >= -0.1 || currentPosition >= -0.1) {
-          armState = ArmState.DEG_45;
+        if (currentPosition >= -0.1 || currentPosition <= 0.1) {
+          timer.start();
+          if (timer.hasElapsed(0.5)) {
+            armState = ArmState.DEG_45;
+            timer.stop();
+            timer.reset();
+          }
+        } else {
+          timer.stop();
+          timer.reset();
         }
         break;
       case DEG_45:
         requestedPositionDeg.set(45.0);
         if (currentPosition <= 45.1 || currentPosition >= 44.9) {
           timer.start();
-          if (timer.hasElapsed(2)) {
-            armState = ArmState.DEG_135;
+          if (timer.hasElapsed(1.5)) {
+            armState = ArmState.DEG_179;
             timer.stop();
             timer.reset();
           }
@@ -78,7 +88,7 @@ public class ArmCommands extends Command {
         requestedPositionDeg.set(135.0);
         if (currentPosition <= 135.1 || currentPosition >= 134.9) {
           timer.start();
-          if (timer.hasElapsed(2)) {
+          if (timer.hasElapsed(1.5)) {
             armState = ArmState.DEG_0;
             timer.stop();
             timer.reset();
@@ -92,7 +102,7 @@ public class ArmCommands extends Command {
         requestedPositionDeg.set(0.0);
         if (requestedPosition <= 0.1 || currentPosition >= -0.1 || currentPosition >= -0.1) {
           timer.start();
-          if (timer.hasElapsed(2)) {
+          if (timer.hasElapsed(1.5)) {
             armState = ArmState.DEG_NEG_179;
             timer.stop();
             timer.reset();
@@ -106,8 +116,8 @@ public class ArmCommands extends Command {
         requestedPositionDeg.set(-179.0);
         if (currentPosition <= -179.1 || currentPosition >= -178.9) {
           timer.start();
-          if (timer.hasElapsed(2)) {
-            armState = ArmState.DEG_179;
+          if (timer.hasElapsed(1.5)) {
+            armState = ArmState.DEG_NEG_90;
             timer.stop();
             timer.reset();
           }
@@ -120,8 +130,8 @@ public class ArmCommands extends Command {
         requestedPositionDeg.set(179.0);
         if (currentPosition <= 179.1 || currentPosition >= 178.9) {
           timer.start();
-          if (timer.hasElapsed(2)) {
-            armState = ArmState.DEG_NEG_90;
+          if (timer.hasElapsed(1.5)) {
+            armState = ArmState.DEG_NEG_179;
             timer.stop();
             timer.reset();
           }
@@ -134,8 +144,8 @@ public class ArmCommands extends Command {
         requestedPositionDeg.set(-90.0);
         if (currentPosition >= -90.1 || currentPosition <= -89.9) {
           timer.start();
-          if (timer.hasElapsed(2)) {
-            armState = ArmState.DEG_90;
+          if (timer.hasElapsed(1.5)) {
+            armState = ArmState.DEG_NEG_45;
             timer.stop();
             timer.reset();
           }
@@ -147,6 +157,47 @@ public class ArmCommands extends Command {
       case DEG_90:
         requestedPositionDeg.set(90.0);
         if (currentPosition <= 90.1 || currentPosition >= 89.9) {}
+        break;
+      case DEG_NEG_45:
+        requestedPositionDeg.set(-45.0);
+        if (currentPosition <= -45.1 || currentPosition >= -44.9) {
+          timer.start();
+          if (timer.hasElapsed(1.5)) {
+            armState = ArmState.DEG_180;
+            timer.stop();
+            timer.reset();
+          }
+        } else {
+          timer.stop();
+          timer.reset();
+        }
+        break;
+      case DEG_180:
+        requestedPositionDeg.set(180.0);
+        if (currentPosition <= -45.1 || currentPosition >= -44.9) {
+          timer.start();
+          if (timer.hasElapsed(1.5)) {
+            armState = ArmState.DEG_85;
+            timer.stop();
+            timer.reset();
+          }
+        } else {
+          timer.stop();
+          timer.reset();
+        }
+        break;
+      case DEG_85:
+        requestedPositionDeg.set(85.0);
+        if (currentPosition <= 85.1 || currentPosition >= 84.9) {
+          timer.start();
+          if (timer.hasElapsed(1.5)) {
+            timer.stop();
+            timer.reset();
+          }
+        } else {
+          timer.stop();
+          timer.reset();
+        }
         break;
     }
     Logger.recordOutput("Arm/requestedPosition", requestedPosition);
