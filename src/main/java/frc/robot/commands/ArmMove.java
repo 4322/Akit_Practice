@@ -20,8 +20,6 @@ public class ArmMove extends Command {
     this.arm = arm;
 
     addRequirements(arm);
-
-    armController.enableContinuousInput(-180.0, 180.0);
   }
 
   @Override
@@ -33,6 +31,24 @@ public class ArmMove extends Command {
 
     double currentPosition = arm.getPositionDeg();
     double requestedPosition = requestedPositionDeg.get();
+
+    // First check if arm can move optimized
+    if (currentPosition < 0) {
+      if (requestedPosition > 0) {
+        requestedPosition -= 360;
+      }
+    } else if (currentPosition > 0) {
+      if (requestedPosition < 0) {
+        requestedPosition += 360;
+      }
+    }
+
+    if (requestedPosition > 270) {
+      requestedPosition -= 360;
+    } else if (requestedPosition < -270) {
+      requestedPosition += 360;
+    }
+
     double output = armController.calculate(currentPosition, requestedPosition);
     arm.setVoltage(output);
 
