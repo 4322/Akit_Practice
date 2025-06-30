@@ -35,11 +35,15 @@ public class ArmMove extends Command {
     // First check if arm can move optimized
     if (currentPosition < 0) {
       if (requestedPosition > 0) {
-        requestedPosition -= 360;
+        if (Math.abs(requestedPosition - currentPosition) > 180) {
+          requestedPosition -= 360;
+        }
       }
     } else if (currentPosition > 0) {
       if (requestedPosition < 0) {
-        requestedPosition += 360;
+        if (Math.abs(requestedPosition - currentPosition) > 180) {
+          requestedPosition += 360;
+        }
       }
     }
 

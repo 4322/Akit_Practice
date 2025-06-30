@@ -141,7 +141,7 @@ public class Robot extends LoggedRobot {
       autonomousCommand.cancel();
     }
 
-    new ArmMove(robotContainer.arm1).schedule();
+    new ArmMove(robotContainer.arm2).schedule();
   }
 
   /** This function is called periodically during operator control. */
