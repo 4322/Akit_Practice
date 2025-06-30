@@ -32,7 +32,7 @@ public class ArmMove extends Command {
     double currentPosition = arm.getPositionDeg();
     double requestedPosition = requestedPositionDeg.get();
 
-    // First check if arm can move optimized
+    // Change the requested position for arm based on optimiation logic
     if (currentPosition < 0) {
       if (requestedPosition > 0) {
         if (Math.abs(requestedPosition - currentPosition) > 180) {
@@ -47,6 +47,7 @@ public class ArmMove extends Command {
       }
     }
 
+    // Ensure that arm is never commanded to go past 270 degrees or -270 degrees EVER
     if (requestedPosition > 270) {
       requestedPosition -= 360;
     } else if (requestedPosition < -270) {
