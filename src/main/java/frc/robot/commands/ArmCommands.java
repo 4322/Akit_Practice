@@ -16,7 +16,7 @@ public class ArmCommands extends Command {
   private LoggedNetworkNumber kI = new LoggedNetworkNumber("Arm/kI", 0);
   private LoggedNetworkNumber kD = new LoggedNetworkNumber("Arm/kD", 0.05);
 
-  private TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(10000, 10000);
+  private TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(90000, 90000);
   private ProfiledPIDController armController = new ProfiledPIDController(0, 0, 0, constraints);
   private Arm arm;
   private Timer timer = new Timer();
@@ -55,6 +55,10 @@ public class ArmCommands extends Command {
     switch (armState) {
       case DEG_NONE:
         armState = ArmState.DEG_45;
+        requestedPositionDeg.set(0.0);
+        if (requestedPosition <= 0.1 || currentPosition >= -0.1 || currentPosition >= -0.1) {
+          armState = ArmState.DEG_45;
+        }
         break;
       case DEG_45:
         requestedPositionDeg.set(45.0);
