@@ -17,7 +17,7 @@ public class ArmCommands extends Command {
   private LoggedNetworkNumber kI = new LoggedNetworkNumber("Arm/kI", 0);
   private LoggedNetworkNumber kD = new LoggedNetworkNumber("Arm/kD", 0.05);
 
-  private TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(100, 100);
+  private TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(750, 750);
   private ProfiledPIDController armController = new ProfiledPIDController(0, 0, 0, constraints);
   private Arm arm;
   private Timer timer = new Timer();
