@@ -40,7 +40,6 @@ public class ArmCommands extends Command {
   public ArmCommands(Arm arm) {
     this.arm = arm;
     this.armController = armController;
-    armController.enableContinuousInput(-180, 180);
     addRequirements(arm);
   }
 
@@ -54,6 +53,22 @@ public class ArmCommands extends Command {
     double requestedPosition = requestedPositionDeg.get();
     double output = armController.calculate(currentPosition, requestedPosition);
     arm.setVoltage(output);
+
+    if (currentPosition < 0) {
+      if (requestedPosition > 0) {
+        requestedPosition -= 270;
+      }
+    } else if (currentPosition > 0) {
+      if (requestedPosition < 0) {
+        requestedPosition += 270;
+      }
+    }
+
+    if (requestedPosition > 270) {
+      requestedPosition -= 270;
+    } else if (requestedPosition < -270) {
+      requestedPosition += 270;
+    }
 
     switch (armState) {
       case DEG_NONE:
