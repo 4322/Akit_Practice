@@ -56,15 +56,16 @@ public class ArmCommands extends Command {
     Logger.recordOutput("Arm/currentPosition", currentPosition);
     Logger.recordOutput("Arm/requestedPositionBeforeOptimize", requestedPosition);
 
+    double uwu = Math.abs(requestedPosition - currentPosition);
     if (currentPosition < 0) {
       if (requestedPosition > 0) {
-        if (Math.abs(requestedPosition - currentPosition) > 180) {
+        if (uwu > 180) {
           requestedPosition -= 360;
         }
       }
     } else if (currentPosition > 0) {
       if (requestedPosition < 0) {
-        if (Math.abs(requestedPosition - currentPosition) > 180) {
+        if (uwu > 180) {
           requestedPosition += 360;
         }
       }

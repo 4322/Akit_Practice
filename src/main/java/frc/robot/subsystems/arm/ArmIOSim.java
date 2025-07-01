@@ -19,7 +19,7 @@ public class ArmIOSim implements ArmIO {
   private final Mechanism2d mech2d = new Mechanism2d(2, 2);
   private final MechanismRoot2d armPivot = mech2d.getRoot("ArmPivot", 1, 1);
   private final MechanismLigament2d armTower =
-      armPivot.append(new MechanismLigament2d("ArmTower", 1, -90, 6, new Color8Bit(Color.kCoral)));
+      armPivot.append(new MechanismLigament2d("ArmTower", 1, -90, 6, new Color8Bit(Color.kBlue)));
   private final MechanismLigament2d arm =
       armPivot.append(new MechanismLigament2d("Arm", 1, 0, 6, new Color8Bit(Color.kYellow)));
 
