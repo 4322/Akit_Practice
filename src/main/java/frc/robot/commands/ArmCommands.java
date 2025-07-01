@@ -95,7 +95,7 @@ public class ArmCommands extends Command {
         if (pid.atSetpoint()) {
           setPoint = 90.0;
           // Remove to disable loop
-          armPoints = ArmPoints.FORTY_FIVE;
+          //armPoints = ArmPoints.FORTY_FIVE;
         }
         break;
     }
