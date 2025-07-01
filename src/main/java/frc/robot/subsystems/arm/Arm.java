@@ -15,6 +15,7 @@ public class Arm extends SubsystemBase {
   private int instanceNum;
 
   public Arm(ArmIO io, int instanceNum) {
+    this.instanceNum = instanceNum;
     System.out.println("Inited arm" + instanceNum);
     this.io = io;
     System.out.println("instance number " + this.instanceNum);

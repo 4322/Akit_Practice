@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
-import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.arm.Arm;
 import java.util.Objects;
@@ -38,7 +39,12 @@ public class ArmCommands extends Command {
 
   private ArmPoints armPoints = ArmPoints.FORTY_FIVE;
 
-  PIDController pid = new PIDController(0, 0, 0);
+  ProfiledPIDController pid =
+      new ProfiledPIDController(
+          0,
+          0,
+          0,
+          new TrapezoidProfile.Constraints(180, 90)); // TODO placeholder values for constraints
   private Arm arm;
 
   public ArmCommands(Arm arm) {
@@ -62,40 +68,40 @@ public class ArmCommands extends Command {
         armPoints = ArmPoints.ONE_HUNDRED_THIRTY_FIVE;
         break;
       case ONE_HUNDRED_THIRTY_FIVE:
-        if (pid.atSetpoint()) {
+        if (pid.atGoal()) {
           setPoint = 135.0;
           armPoints = ArmPoints.ZERO;
         }
         break;
       case ZERO:
-        if (pid.atSetpoint()) {
+        if (pid.atGoal()) {
           setPoint = 0.0;
           armPoints = ArmPoints.NEGATIVE_ONE_HUNDRED_SEVENTY_NINE;
         }
         break;
       case NEGATIVE_ONE_HUNDRED_SEVENTY_NINE:
-        if (pid.atSetpoint()) {
+        if (pid.atGoal()) {
           setPoint = -179.0;
           armPoints = ArmPoints.ONE_HUNDRED_SEVENTY_NINE;
         }
         break;
       case ONE_HUNDRED_SEVENTY_NINE:
-        if (pid.atSetpoint()) {
+        if (pid.atGoal()) {
           setPoint = 179.0;
           armPoints = ArmPoints.NEGATIVE_NINETY;
         }
         break;
       case NEGATIVE_NINETY:
-        if (pid.atSetpoint()) {
+        if (pid.atGoal()) {
           setPoint = -90.0;
           armPoints = ArmPoints.NINETY;
         }
         break;
       case NINETY:
-        if (pid.atSetpoint()) {
+        if (pid.atGoal()) {
           setPoint = 90.0;
           // Remove to disable loop
-          //armPoints = ArmPoints.FORTY_FIVE;
+          // armPoints = ArmPoints.FORTY_FIVE;
         }
         break;
     }
@@ -110,6 +116,8 @@ public class ArmCommands extends Command {
       System.out.println("Current: " + currentPoint + " | Target: " + setPoint);
       System.out.println("kP: " + kP.get() + " | kI: " + kI.get() + " | kD: " + kD.get());
       System.out.println(output);
+    } else {
+      System.out.println(this.type);
     }
   }
 
@@ -122,14 +130,15 @@ public class ArmCommands extends Command {
   public void end(boolean interrupted) {}
 
   public void setType(String type) {
+    System.out.println("Type: "+type);
     this.type = type;
     if (Objects.equals("arm0", type)) {
       kP.set(1);
       kD.set(0.1);
     } else if (Objects.equals("arm1", type)) {
-      kP.set(2);
+      System.out.println("Arm 1 values set");
+      kP.set(2.5);
       kD.set(0.1);
-
       ownKP = 1;
       ownKD = 0.1;
     }
