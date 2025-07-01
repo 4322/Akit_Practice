@@ -28,16 +28,17 @@ public class ArmCommands extends Command {
   private String type;
 
   private enum ArmPoints {
-    FORTY_FIVE,
-    ONE_HUNDRED_THIRTY_FIVE,
     ZERO,
-    NEGATIVE_ONE_HUNDRED_SEVENTY_NINE,
+    FORTY_FIVE,
     ONE_HUNDRED_SEVENTY_NINE,
+    NEGATIVE_ONE_HUNDRED_SEVENTY_NINE,
     NEGATIVE_NINETY,
-    NINETY
+    NEGATIVE_FORTY_FIVE,
+    ONE_HUNDRED_EIGHTY,
+    EIGHTY_FIVE
   }
 
-  private ArmPoints armPoints = ArmPoints.FORTY_FIVE;
+  private ArmPoints armPoints = ArmPoints.ZERO;
 
   ProfiledPIDController pid =
       new ProfiledPIDController(
@@ -63,47 +64,52 @@ public class ArmCommands extends Command {
   @Override
   public void execute() {
     switch (armPoints) {
-      case FORTY_FIVE:
-        setPoint = 45.0;
-        armPoints = ArmPoints.ONE_HUNDRED_THIRTY_FIVE;
-        break;
-      case ONE_HUNDRED_THIRTY_FIVE:
-        if (pid.atGoal()) {
-          setPoint = 135.0;
-          armPoints = ArmPoints.ZERO;
-        }
-        break;
       case ZERO:
+        setPoint = 45;
+        armPoints = ArmPoints.FORTY_FIVE;
+      break;
+      case FORTY_FIVE:
         if (pid.atGoal()) {
-          setPoint = 0.0;
-          armPoints = ArmPoints.NEGATIVE_ONE_HUNDRED_SEVENTY_NINE;
-        }
-        break;
-      case NEGATIVE_ONE_HUNDRED_SEVENTY_NINE:
-        if (pid.atGoal()) {
-          setPoint = -179.0;
+          setPoint = 179;
           armPoints = ArmPoints.ONE_HUNDRED_SEVENTY_NINE;
         }
-        break;
+      break;
       case ONE_HUNDRED_SEVENTY_NINE:
         if (pid.atGoal()) {
-          setPoint = 179.0;
+          setPoint = -179;
+          armPoints = ArmPoints.NEGATIVE_ONE_HUNDRED_SEVENTY_NINE;
+        }
+      break;
+      case NEGATIVE_ONE_HUNDRED_SEVENTY_NINE:
+        if (pid.atGoal()) {
+          setPoint = -90;
           armPoints = ArmPoints.NEGATIVE_NINETY;
         }
-        break;
+      break;
       case NEGATIVE_NINETY:
         if (pid.atGoal()) {
-          setPoint = -90.0;
-          armPoints = ArmPoints.NINETY;
+          setPoint = -45;
+          armPoints = ArmPoints.NEGATIVE_FORTY_FIVE;
         }
-        break;
-      case NINETY:
+      break;
+      case NEGATIVE_FORTY_FIVE:
         if (pid.atGoal()) {
-          setPoint = 90.0;
-          // Remove to disable loop
-          // armPoints = ArmPoints.FORTY_FIVE;
+          setPoint = 180;
+          armPoints = ArmPoints.ONE_HUNDRED_EIGHTY;
         }
-        break;
+      break;
+      case ONE_HUNDRED_EIGHTY:
+        if (pid.atGoal()) {
+          setPoint = 85;
+          armPoints = ArmPoints.EIGHTY_FIVE;
+        }
+      break;
+      case EIGHTY_FIVE:
+        if (pid.atGoal() && true) {
+          setPoint = 0;
+          armPoints = ArmPoints.ZERO;
+        }
+      
     }
 
     pid.setPID(kP.get(), kI.get(), kD.get());
@@ -135,12 +141,9 @@ public class ArmCommands extends Command {
     if (Objects.equals("arm0", type)) {
       kP.set(1);
       kD.set(0.1);
-    } else if (Objects.equals("arm1", type)) {
-      System.out.println("Arm 1 values set");
+    } else if (Objects.equals("arm2", type)) {
       kP.set(2.5);
       kD.set(0.1);
-      ownKP = 1;
-      ownKD = 0.1;
     }
     System.out.println(
         "Type: " + type + " | " + "kP: " + kP.get() + " | kI: " + kI.get() + " | kD: " + kD.get());
