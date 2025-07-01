@@ -106,7 +106,7 @@ public class ArmCommands extends Command {
     output = pid.calculate(currentPoint, setPoint);
     arm.setVoltage(output);
 
-    if (Objects.equals("arm2", this.type)) {
+    if (Objects.equals("arm1", this.type)) {
       System.out.println("Current: " + currentPoint + " | Target: " + setPoint);
       System.out.println("kP: " + kP.get() + " | kI: " + kI.get() + " | kD: " + kD.get());
       System.out.println(output);
@@ -123,10 +123,10 @@ public class ArmCommands extends Command {
 
   public void setType(String type) {
     this.type = type;
-    if (Objects.equals("arm1", type)) {
+    if (Objects.equals("arm0", type)) {
       kP.set(1);
       kD.set(0.1);
-    } else if (Objects.equals("arm2", type)) {
+    } else if (Objects.equals("arm1", type)) {
       kP.set(2);
       kD.set(0.1);
 
