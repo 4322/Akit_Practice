@@ -21,6 +21,17 @@ public class ArmCommands extends Command {
 
   private boolean isInited = false;
 
+  private enum ArmPoints {
+    FORTY_FIVE,
+    ONE_HUNDRED_THIRTY_FIVE,
+    ZERO,
+    NEGATIVE_ONE_HUNDRED_SEVENTY_NINE,
+    ONE_HUNDRED_SEVENTY_NINE,
+    NEGATIVE_NINETY,
+    NINETY
+  }
+
+  private ArmPoints armPoints = ArmPoints.FORTY_FIVE;
 
   PIDController pid = new PIDController(0, 0, 0);
   private Arm arm;
@@ -42,6 +53,50 @@ public class ArmCommands extends Command {
 
   @Override
   public void execute() {
+    switch (armPoints) {
+      case FORTY_FIVE:
+        setPoint = 45.0;
+        armPoints = ArmPoints.ONE_HUNDRED_THIRTY_FIVE;
+        break;
+      case ONE_HUNDRED_THIRTY_FIVE:
+        if (pid.atSetpoint()) {
+          setPoint = 135.0;
+          armPoints = ArmPoints.ZERO;
+        }
+        break;
+      case ZERO:
+        if (pid.atSetpoint()) {
+          setPoint = 0.0;
+          armPoints = ArmPoints.NEGATIVE_ONE_HUNDRED_SEVENTY_NINE;
+        }
+        break;
+      case NEGATIVE_ONE_HUNDRED_SEVENTY_NINE:
+        if (pid.atSetpoint()) {
+          setPoint = -179.0;
+          armPoints = ArmPoints.ONE_HUNDRED_SEVENTY_NINE;
+        }
+        break;
+      case ONE_HUNDRED_SEVENTY_NINE:
+        if (pid.atSetpoint()) {
+          setPoint = 179.0;
+          armPoints = ArmPoints.NEGATIVE_NINETY;
+        }
+        break;
+      case NEGATIVE_NINETY:
+        if (pid.atSetpoint()) {
+          setPoint = -90.0;
+          armPoints = ArmPoints.NINETY;
+        }
+        break;
+      case NINETY:
+        if (pid.atSetpoint()) {
+          setPoint = 90.0;
+          // Remove to disable loop
+          armPoints = ArmPoints.FORTY_FIVE;
+        }
+        break;
+    }
+
     pid.setPID(kP.get(), kI.get(), kD.get());
     currentPoint = arm.getPositionDeg();
     output = pid.calculate(currentPoint, setPoint);
@@ -53,13 +108,9 @@ public class ArmCommands extends Command {
 
   @Override
   public boolean isFinished() {
-    return pid.atSetpoint();
+    return false;
   }
 
   @Override
   public void end(boolean interrupted) {}
-
-  public boolean isInitedYet() {
-    return isInited;
-  }
 }

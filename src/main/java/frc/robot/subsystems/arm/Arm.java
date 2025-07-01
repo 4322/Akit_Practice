@@ -12,8 +12,6 @@ public class Arm extends SubsystemBase {
 
   private ArmCommands armCommands = new ArmCommands(this);
 
-  private int commandsScheduled = 0;
-
   private int instanceNum;
 
   public Arm(ArmIO io, int instanceNum) {
@@ -22,8 +20,10 @@ public class Arm extends SubsystemBase {
   }
 
   public void onInit() {
+    if (armCommands.isScheduled()) {
+      armCommands.cancel();
+    }
     armCommands.schedule();
-    commandsScheduled++;
   }
 
   @Override
@@ -31,12 +31,6 @@ public class Arm extends SubsystemBase {
     // System.out.println("Arm running");
     io.updateInputs(inputs);
     Logger.processInputs("Arm " + instanceNum, inputs);
-
-    if (commandsScheduled < 6 && !armCommands.isScheduled() && armCommands.isInitedYet()) {
-      System.out.println("Rescheduled command | Time: " + commandsScheduled);
-      commandsScheduled++;
-      armCommands.schedule();
-    }
   }
 
   public void setVoltage(double voltage) {
