@@ -10,6 +10,8 @@ import org.littletonrobotics.junction.networktables.LoggedNetworkNumber;
 public class ArmCommands extends Command {
   private LoggedNetworkNumber requestedPositionDeg =
       new LoggedNetworkNumber("Arm/RequestedPositionDeg", 0.0);
+  private LoggedNetworkNumber currentPositionDeg =
+      new LoggedNetworkNumber("Arm/CurrentPositionDeg", 0.0);
 
   private LoggedNetworkNumber kP = new LoggedNetworkNumber("Arm/kP", 0);
   private LoggedNetworkNumber kI = new LoggedNetworkNumber("Arm/kI", 0);
@@ -105,6 +107,8 @@ public class ArmCommands extends Command {
         }
         break;
     }
+    requestedPositionDeg.set(setPoint);
+    currentPositionDeg.set(arm.getPositionDeg());
 
     pid.setPID(kP.get(), kI.get(), kD.get());
     // pid.setPID(ownKP, ownKI, ownKD);
@@ -130,7 +134,7 @@ public class ArmCommands extends Command {
   public void end(boolean interrupted) {}
 
   public void setType(String type) {
-    System.out.println("Type: "+type);
+    System.out.println("Type: " + type);
     this.type = type;
     if (Objects.equals("arm0", type)) {
       kP.set(1);
