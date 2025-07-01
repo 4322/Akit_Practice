@@ -3,14 +3,20 @@ package frc.robot.commands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.arm.Arm;
+import java.util.Objects;
 import org.littletonrobotics.junction.networktables.LoggedNetworkNumber;
 
 public class ArmCommands extends Command {
   private LoggedNetworkNumber requestedPositionDeg =
       new LoggedNetworkNumber("Arm/RequestedPositionDeg", 0.0);
-  private LoggedNetworkNumber kP = new LoggedNetworkNumber("Arm/kP", 1);
+
+  private LoggedNetworkNumber kP = new LoggedNetworkNumber("Arm/kP", 0);
   private LoggedNetworkNumber kI = new LoggedNetworkNumber("Arm/kI", 0);
-  private LoggedNetworkNumber kD = new LoggedNetworkNumber("Arm/kD", 0.1);
+  private LoggedNetworkNumber kD = new LoggedNetworkNumber("Arm/kD", 0);
+
+  private double ownKP = 0;
+  private double ownKI = 0;
+  private double ownKD = 0;
 
   private double setPoint = 0;
   private double currentPoint;
@@ -18,8 +24,7 @@ public class ArmCommands extends Command {
 
   private static int instance;
   private int ownInstance;
-
-  private boolean isInited = false;
+  private String type;
 
   private enum ArmPoints {
     FORTY_FIVE,
@@ -39,7 +44,7 @@ public class ArmCommands extends Command {
   public ArmCommands(Arm arm) {
     this.ownInstance = instance;
     instance++;
-    System.out.println("Initialized instance " + ownInstance + " of ArmCommands");
+
     this.arm = arm;
     addRequirements(arm);
     pid.enableContinuousInput(-180.0, 180.0);
@@ -47,9 +52,7 @@ public class ArmCommands extends Command {
   }
 
   @Override
-  public void initialize() {
-    isInited = true;
-  }
+  public void initialize() {}
 
   @Override
   public void execute() {
@@ -98,12 +101,16 @@ public class ArmCommands extends Command {
     }
 
     pid.setPID(kP.get(), kI.get(), kD.get());
+    // pid.setPID(ownKP, ownKI, ownKD);
     currentPoint = arm.getPositionDeg();
     output = pid.calculate(currentPoint, setPoint);
     arm.setVoltage(output);
-    System.out.println("Current: " + currentPoint + " | Target: " + setPoint);
-    System.out.println("kP: " + kP.get() + " | kI: " + kI.get() + " | kD: " + kD.get());
-    System.out.println(output);
+
+    if (Objects.equals("arm2", this.type)) {
+      System.out.println("Current: " + currentPoint + " | Target: " + setPoint);
+      System.out.println("kP: " + kP.get() + " | kI: " + kI.get() + " | kD: " + kD.get());
+      System.out.println(output);
+    }
   }
 
   @Override
@@ -113,4 +120,20 @@ public class ArmCommands extends Command {
 
   @Override
   public void end(boolean interrupted) {}
+
+  public void setType(String type) {
+    this.type = type;
+    if (Objects.equals("arm1", type)) {
+      kP.set(1);
+      kD.set(0.1);
+    } else if (Objects.equals("arm2", type)) {
+      kP.set(2);
+      kD.set(0.1);
+
+      ownKP = 1;
+      ownKD = 0.1;
+    }
+    System.out.println(
+        "Type: " + type + " | " + "kP: " + kP.get() + " | kI: " + kI.get() + " | kD: " + kD.get());
+  }
 }

@@ -15,8 +15,12 @@ public class Arm extends SubsystemBase {
   private int instanceNum;
 
   public Arm(ArmIO io, int instanceNum) {
+    System.out.println("Inited arm" + instanceNum);
     this.io = io;
-    this.instanceNum = instanceNum;
+    this.instanceNum = instanceNum + 1;
+    System.out.println("instance number " + this.instanceNum);
+
+    armCommands.setType("arm" + this.instanceNum);
   }
 
   public void onInit() {
@@ -24,6 +28,7 @@ public class Arm extends SubsystemBase {
       armCommands.cancel();
     }
     armCommands.schedule();
+    System.out.println("Instance " + this.instanceNum + " of arm scheduled");
   }
 
   @Override
