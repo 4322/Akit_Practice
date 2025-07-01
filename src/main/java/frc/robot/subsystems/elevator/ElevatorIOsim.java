@@ -1,5 +1,7 @@
 package frc.robot.subsystems.elevator;
 
-public class ElevatorIOSIM extends Elevator {
+import 
+public class ElevatorIOsim implements ElevatorIO {
+
 
 }
