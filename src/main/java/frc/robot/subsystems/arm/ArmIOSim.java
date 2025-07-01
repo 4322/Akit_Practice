@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.util.Color8Bit;
 public class ArmIOSim implements ArmIO {
   private SingleJointedArmSim sim;
   private double appliedVolts = 0.0;
+  private int instanceNum = 0;
 
   private final Mechanism2d mech2d = new Mechanism2d(2, 2);
   private final MechanismRoot2d armPivot = mech2d.getRoot("ArmPivot", 1, 1);
@@ -42,6 +43,7 @@ public class ArmIOSim implements ArmIO {
             true,
             0);
     SmartDashboard.putData("Arm_Sim " + instanceNum, mech2d);
+    this.instanceNum = instanceNum;
   }
 
   @Override
@@ -56,10 +58,10 @@ public class ArmIOSim implements ArmIO {
     inputs.appliedVolts = appliedVolts;
 
     if (sim.hasHitLowerLimit() && inputs.appliedVolts < 0) {
-      System.out.println("Arm has hit lower limit!");
+      System.out.println("Arm " + instanceNum + " has hit lower limit!");
       inputs.appliedVolts = 0.0;
     } else if (sim.hasHitUpperLimit() && inputs.appliedVolts > 0) {
-      System.out.println("Arm has hit upper limit!");
+      System.out.println("Arm " + instanceNum + " has hit upper limit!");
       inputs.appliedVolts = 0.0;
     }
 
