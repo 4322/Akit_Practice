@@ -8,9 +8,9 @@ import org.littletonrobotics.junction.networktables.LoggedNetworkNumber;
 public class ArmCommands extends Command {
   private LoggedNetworkNumber requestedPositionDeg =
       new LoggedNetworkNumber("Arm/RequestedPositionDeg", 0.0);
-  private LoggedNetworkNumber kP = new LoggedNetworkNumber("Arm/kP", 0.7);
+  private LoggedNetworkNumber kP = new LoggedNetworkNumber("Arm/kP", 1);
   private LoggedNetworkNumber kI = new LoggedNetworkNumber("Arm/kI", 0);
-  private LoggedNetworkNumber kD = new LoggedNetworkNumber("Arm/kD", 0.2);
+  private LoggedNetworkNumber kD = new LoggedNetworkNumber("Arm/kD", 0.1);
 
   private double setPoint = 0;
   private double currentPoint;
