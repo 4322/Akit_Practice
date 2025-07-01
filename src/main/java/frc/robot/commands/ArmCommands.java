@@ -67,58 +67,57 @@ public class ArmCommands extends Command {
       case ZERO:
         setPoint = 45;
         armPoints = ArmPoints.FORTY_FIVE;
-      break;
+        break;
       case FORTY_FIVE:
         if (pid.atGoal()) {
           setPoint = 179;
           armPoints = ArmPoints.ONE_HUNDRED_SEVENTY_NINE;
         }
-      break;
+        break;
       case ONE_HUNDRED_SEVENTY_NINE:
         if (pid.atGoal()) {
           setPoint = -179;
           armPoints = ArmPoints.NEGATIVE_ONE_HUNDRED_SEVENTY_NINE;
         }
-      break;
+        break;
       case NEGATIVE_ONE_HUNDRED_SEVENTY_NINE:
         if (pid.atGoal()) {
           setPoint = -90;
           armPoints = ArmPoints.NEGATIVE_NINETY;
         }
-      break;
+        break;
       case NEGATIVE_NINETY:
         if (pid.atGoal()) {
           setPoint = -45;
           armPoints = ArmPoints.NEGATIVE_FORTY_FIVE;
         }
-      break;
+        break;
       case NEGATIVE_FORTY_FIVE:
         if (pid.atGoal()) {
           setPoint = 180;
           armPoints = ArmPoints.ONE_HUNDRED_EIGHTY;
         }
-      break;
+        break;
       case ONE_HUNDRED_EIGHTY:
         if (pid.atGoal()) {
           setPoint = 85;
           armPoints = ArmPoints.EIGHTY_FIVE;
         }
-      break;
+        break;
       case EIGHTY_FIVE:
         if (pid.atGoal() && true) {
           setPoint = 0;
           armPoints = ArmPoints.ZERO;
         }
-      
     }
 
     pid.setPID(kP.get(), kI.get(), kD.get());
     // pid.setPID(ownKP, ownKI, ownKD);
-    currentPoint = arm.getPositionDeg();
+    currentPoint = clampAngle(arm.getPositionDeg());
     output = pid.calculate(currentPoint, setPoint);
     arm.setVoltage(output);
 
-    if (Objects.equals("arm1", this.type)) {
+    if (Objects.equals("arm2", this.type)) {
       System.out.println("Current: " + currentPoint + " | Target: " + setPoint);
       System.out.println("kP: " + kP.get() + " | kI: " + kI.get() + " | kD: " + kD.get());
       System.out.println(output);
@@ -136,7 +135,7 @@ public class ArmCommands extends Command {
   public void end(boolean interrupted) {}
 
   public void setType(String type) {
-    System.out.println("Type: "+type);
+    System.out.println("Type: " + type);
     this.type = type;
     if (Objects.equals("arm0", type)) {
       kP.set(1);
@@ -147,5 +146,15 @@ public class ArmCommands extends Command {
     }
     System.out.println(
         "Type: " + type + " | " + "kP: " + kP.get() + " | kI: " + kI.get() + " | kD: " + kD.get());
+  }
+
+  private double clampAngle(double angle) {
+    double returnAngle = angle % 540;
+    if (angle > 270) {
+      returnAngle -= 540;
+    } else if (angle < -270) {
+      returnAngle += 540;
+    }
+    return returnAngle;
   }
 }
