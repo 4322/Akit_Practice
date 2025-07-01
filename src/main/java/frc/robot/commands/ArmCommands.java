@@ -45,7 +45,7 @@ public class ArmCommands extends Command {
           0,
           0,
           0,
-          new TrapezoidProfile.Constraints(180, 90)); // TODO placeholder values for constraints
+          new TrapezoidProfile.Constraints(360, 180)); // TODO placeholder values for constraints
   private Arm arm;
 
   public ArmCommands(Arm arm) {
@@ -54,12 +54,14 @@ public class ArmCommands extends Command {
 
     this.arm = arm;
     addRequirements(arm);
-    pid.enableContinuousInput(-180.0, 180.0);
+    // pid.enableContinuousInput(-270.0, 270.0);
     pid.setTolerance(1);
   }
 
   @Override
-  public void initialize() {}
+  public void initialize() {
+    pid.reset(0);
+  }
 
   @Override
   public void execute() {
@@ -105,7 +107,7 @@ public class ArmCommands extends Command {
         }
         break;
       case EIGHTY_FIVE:
-        if (pid.atGoal() && true) {
+        if (pid.atGoal() && false) { // Prevent loop
           setPoint = 0;
           armPoints = ArmPoints.ZERO;
         }
@@ -114,7 +116,8 @@ public class ArmCommands extends Command {
     pid.setPID(kP.get(), kI.get(), kD.get());
     // pid.setPID(ownKP, ownKI, ownKD);
     currentPoint = clampAngle(arm.getPositionDeg());
-    output = pid.calculate(currentPoint, setPoint);
+    pid.setGoal(setPoint);
+    output = pid.calculate(currentPoint);
     arm.setVoltage(output);
 
     if (Objects.equals("arm2", this.type)) {
@@ -149,12 +152,13 @@ public class ArmCommands extends Command {
   }
 
   private double clampAngle(double angle) {
-    double returnAngle = angle % 540;
-    if (angle > 270) {
-      returnAngle -= 540;
-    } else if (angle < -270) {
-      returnAngle += 540;
+    double returnAngle = angle % 360;
+    if (returnAngle > 270) {
+      returnAngle -= 360;
+    } else if (returnAngle < -270) {
+      returnAngle += 360;
     }
+    System.out.println("Clamping " + angle + " to " + returnAngle);
     return returnAngle;
   }
 }
