@@ -5,11 +5,10 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.arm.Arm;
 import java.util.Objects;
+import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.LoggedNetworkNumber;
 
 public class ArmCommands extends Command {
-  private LoggedNetworkNumber requestedPositionDeg =
-      new LoggedNetworkNumber("Arm/RequestedPositionDeg", 0.0);
 
   private LoggedNetworkNumber kP = new LoggedNetworkNumber("Arm/kP", 0);
   private LoggedNetworkNumber kI = new LoggedNetworkNumber("Arm/kI", 0);
@@ -107,7 +106,7 @@ public class ArmCommands extends Command {
         }
         break;
       case EIGHTY_FIVE:
-        if (pid.atGoal() && false) { // Prevent loop
+        if (pid.atGoal() && true) { // Prevent loop
           setPoint = 0;
           armPoints = ArmPoints.ZERO;
         }
@@ -115,18 +114,18 @@ public class ArmCommands extends Command {
 
     pid.setPID(kP.get(), kI.get(), kD.get());
     // pid.setPID(ownKP, ownKI, ownKD);
-    currentPoint = clampAngle(arm.getPositionDeg());
+    currentPoint = arm.getPositionDeg();
+    setPoint = calculateShortestPath(currentPoint, setPoint);
     pid.setGoal(setPoint);
     output = pid.calculate(currentPoint);
     arm.setVoltage(output);
 
-    if (Objects.equals("arm2", this.type)) {
-      System.out.println("Current: " + currentPoint + " | Target: " + setPoint);
-      System.out.println("kP: " + kP.get() + " | kI: " + kI.get() + " | kD: " + kD.get());
-      System.out.println(output);
-    } else {
-      System.out.println(this.type);
-    }
+    Logger.recordOutput("currentPoint", currentPoint);
+    Logger.recordOutput("setPoint", setPoint);
+    Logger.recordOutput("kP", kP.get());
+    Logger.recordOutput("kI", kI.get());
+    Logger.recordOutput("kD", kD.get());
+    Logger.recordOutput("Output voltage", output);
   }
 
   @Override
@@ -158,7 +157,37 @@ public class ArmCommands extends Command {
     } else if (returnAngle < -270) {
       returnAngle += 360;
     }
-    System.out.println("Clamping " + angle + " to " + returnAngle);
+
+    Logger.recordOutput("Prior angle", angle);
+    Logger.recordOutput("Clamped angle", returnAngle);
     return returnAngle;
+  }
+
+  private double calculateShortestPath(double currentPoint, double setPoint) {
+    double methodCurrentPoint = clampAngle(currentPoint);
+    double methodSetPoint = clampAngle(setPoint);
+
+    // double difference = methodSetPoint - methodCurrentPoint;
+    double difference = ((methodSetPoint - methodCurrentPoint + 180) % 360 + 360) % 360 - 180;
+
+    Logger.recordOutput("Before Difference", difference);
+
+    /*
+    if (difference > 180) {
+      System.out.println("Add 360");
+      difference -= 360;
+    } else if (difference < -180) {
+      difference += 360;
+      System.out.println("Subtract 360");
+    }
+    */
+
+    double targetPoint = methodCurrentPoint + difference;
+    if (setPoint != targetPoint) {
+      System.out.println("Optimized " + currentPoint + " to [" + setPoint + "] to " + targetPoint);
+    }
+    Logger.recordOutput("Optimized Target Point", clampAngle(targetPoint));
+    Logger.recordOutput("After Difference", difference);
+    return clampAngle(targetPoint);
   }
 }
