@@ -19,7 +19,6 @@ public class ArmCommands extends Command {
   private double ownKD = 0;
 
   private double setPoint = 0;
-  private double realSetPoint = 0;
   private double currentPoint;
   private double output;
 
@@ -67,59 +66,56 @@ public class ArmCommands extends Command {
   public void execute() {
     switch (armPoints) {
       case ZERO:
-        realSetPoint = 45;
+        setPoint = 45;
         armPoints = ArmPoints.FORTY_FIVE;
         break;
       case FORTY_FIVE:
         if (pid.atGoal()) {
-          realSetPoint = 179;
+          setPoint = 179;
           armPoints = ArmPoints.ONE_HUNDRED_SEVENTY_NINE;
         }
         break;
       case ONE_HUNDRED_SEVENTY_NINE:
         if (pid.atGoal()) {
-          realSetPoint = -179;
+          setPoint = -179;
           armPoints = ArmPoints.NEGATIVE_ONE_HUNDRED_SEVENTY_NINE;
-          System.out.println(179);
         }
         break;
       case NEGATIVE_ONE_HUNDRED_SEVENTY_NINE:
         if (pid.atGoal()) {
-          realSetPoint = -90;
+          setPoint = -90;
           armPoints = ArmPoints.NEGATIVE_NINETY;
-          System.out.println(-179);
         }
         break;
       case NEGATIVE_NINETY:
         if (pid.atGoal()) {
-          realSetPoint = -45;
+          setPoint = -45;
           armPoints = ArmPoints.NEGATIVE_FORTY_FIVE;
         }
         break;
       case NEGATIVE_FORTY_FIVE:
         if (pid.atGoal()) {
-          realSetPoint = 180;
+          setPoint = 180;
           armPoints = ArmPoints.ONE_HUNDRED_EIGHTY;
         }
         break;
       case ONE_HUNDRED_EIGHTY:
         if (pid.atGoal()) {
-          realSetPoint = 85;
+          setPoint = 85;
           armPoints = ArmPoints.EIGHTY_FIVE;
         }
         break;
       case EIGHTY_FIVE:
         if (pid.atGoal() && true) { // Prevent loop
-          realSetPoint = 0;
+          setPoint = 0;
           armPoints = ArmPoints.ZERO;
         }
     }
-    Logger.recordOutput("realSetPoint", realSetPoint);
 
     pid.setPID(kP.get(), kI.get(), kD.get());
     // pid.setPID(ownKP, ownKI, ownKD);
     currentPoint = arm.getPositionDeg();
-    setPoint = calculateShortestPath(currentPoint, realSetPoint);
+    setPoint = calculateShortestPath(currentPoint, setPoint);
     pid.setGoal(setPoint);
     output = pid.calculate(currentPoint);
     arm.setVoltage(output);
@@ -171,24 +167,26 @@ public class ArmCommands extends Command {
     double methodCurrentPoint = clampAngle(currentPoint);
     double methodSetPoint = clampAngle(setPoint);
 
+    double difference = Math.abs(methodSetPoint - methodCurrentPoint);
+    
+    Logger.recordOutput("Before Difference", difference);
 
-    double difference = methodSetPoint - methodCurrentPoint;
-    // Go into range of -180, 540
-    difference = difference + 180;
-    // Go into range of 0,360
-    difference = difference % 360;
-    // Ensure result is positive
-    difference = difference + 360;
-    // Confine result to 0,360
-    difference = difference % 360;
-    // Confine result to -180,180
-    difference = difference - 180;
-
-    Logger.recordOutput("Difference", difference);
+    
+    if (difference > 180) {
+      System.out.println("Add 360");
+      difference -= 360;
+    } else if (difference < -180) {
+      difference += 360;
+      System.out.println("Subtract 360");
+    }
+    
 
     double targetPoint = methodCurrentPoint + difference;
+    if (setPoint != targetPoint) {
+      System.out.println("Optimized " + currentPoint + " to [" + setPoint + "] to " + targetPoint);
+    }
     Logger.recordOutput("Optimized Target Point", clampAngle(targetPoint));
-    // Logger.recordOutput("After Difference", difference);
+    Logger.recordOutput("After Difference", difference);
     return clampAngle(targetPoint);
   }
 }
