@@ -167,12 +167,11 @@ public class ArmCommands extends Command {
     double methodCurrentPoint = clampAngle(currentPoint);
     double methodSetPoint = clampAngle(setPoint);
 
-    // double difference = methodSetPoint - methodCurrentPoint;
-    double difference = ((methodSetPoint - methodCurrentPoint + 180) % 360 + 360) % 360 - 180;
-
+    double difference = Math.abs(methodSetPoint - methodCurrentPoint);
+    
     Logger.recordOutput("Before Difference", difference);
 
-    /*
+    
     if (difference > 180) {
       System.out.println("Add 360");
       difference -= 360;
@@ -180,7 +179,7 @@ public class ArmCommands extends Command {
       difference += 360;
       System.out.println("Subtract 360");
     }
-    */
+    
 
     double targetPoint = methodCurrentPoint + difference;
     if (setPoint != targetPoint) {
