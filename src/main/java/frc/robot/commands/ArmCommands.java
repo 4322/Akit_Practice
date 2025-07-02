@@ -12,6 +12,8 @@ public class ArmCommands extends Command {
       new LoggedNetworkNumber("Arm/RequestedPositionDeg", 0.0);
   private LoggedNetworkNumber currentPositionDeg =
       new LoggedNetworkNumber("Arm/CurrentPositionDeg", 0.0);
+      private LoggedNetworkNumber pidSetPointLog =
+      new LoggedNetworkNumber("Arm/PIDSetPoint", 0.0);
 
   private LoggedNetworkNumber kP = new LoggedNetworkNumber("Arm/kP", 0);
   private LoggedNetworkNumber kI = new LoggedNetworkNumber("Arm/kI", 0);
@@ -109,6 +111,7 @@ public class ArmCommands extends Command {
     }
     requestedPositionDeg.set(setPoint);
     currentPositionDeg.set(arm.getPositionDeg());
+    pidSetPointLog.set(pid.getSetpoint().position);
 
     pid.setPID(kP.get(), kI.get(), kD.get());
     // pid.setPID(ownKP, ownKI, ownKD);
