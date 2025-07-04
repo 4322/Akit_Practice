@@ -1,12 +1,13 @@
 package frc.robot.commands;
 
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.networktables.LoggedNetworkNumber;
+
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.arm.Arm;
-import org.littletonrobotics.junction.Logger;
-import org.littletonrobotics.junction.networktables.LoggedNetworkNumber;
 
 public class ArmCommands extends Command {
 
@@ -56,31 +57,13 @@ public class ArmCommands extends Command {
     Logger.recordOutput("Arm/currentPosition", currentPosition);
     Logger.recordOutput("Arm/requestedPositionBeforeOptimize", requestedPosition);
 
-    double uwu = Math.abs(requestedPosition - currentPosition);
-    if (currentPosition < 0) {
-      if (requestedPosition > 0) {
-        if (uwu > 180) {
-          requestedPosition -= 360;
-        }
-      }
-    } else if (currentPosition > 0) {
-      if (requestedPosition < 0) {
-        if (uwu > 180) {
-          requestedPosition += 360;
-        }
-      }
-    }
-
-    if (requestedPosition > 270) {
-      requestedPosition -= 360;
-    } else if (requestedPosition < -270) {
-      requestedPosition += 360;
-    }
+    
 
     switch (armState) {
       case DEG_NONE:
         armState = ArmState.DEG_45;
         requestedPositionDeg.set(0.0);
+        requestedPosition = angleCheckAndCorrection(currentPosition, requestedPosition);
         if (currentPosition >= -0.1 || currentPosition <= 0.1) {
           timer.start();
           if (timer.hasElapsed(0.5)) {
@@ -95,6 +78,7 @@ public class ArmCommands extends Command {
         break;
       case DEG_45:
         requestedPositionDeg.set(45.0);
+        requestedPosition = angleCheckAndCorrection(currentPosition, requestedPosition);
         if (currentPosition <= 45.1 || currentPosition >= 44.9) {
           timer.start();
           if (timer.hasElapsed(1.5)) {
@@ -109,6 +93,7 @@ public class ArmCommands extends Command {
         break;
       case DEG_135:
         requestedPositionDeg.set(135.0);
+        requestedPosition = angleCheckAndCorrection(currentPosition, requestedPosition);
         if (currentPosition <= 135.1 || currentPosition >= 134.9) {
           timer.start();
           if (timer.hasElapsed(1.5)) {
@@ -123,6 +108,7 @@ public class ArmCommands extends Command {
         break;
       case DEG_0:
         requestedPositionDeg.set(0.0);
+        requestedPosition = angleCheckAndCorrection(currentPosition, requestedPosition);
         if (requestedPosition <= 0.1 || currentPosition >= -0.1 || currentPosition >= -0.1) {
           timer.start();
           if (timer.hasElapsed(1.5)) {
@@ -137,6 +123,7 @@ public class ArmCommands extends Command {
         break;
       case DEG_NEG_179:
         requestedPositionDeg.set(-179.0);
+        requestedPosition = angleCheckAndCorrection(currentPosition, requestedPosition);
         if (currentPosition <= -179.1 || currentPosition >= -178.9) {
           timer.start();
           if (timer.hasElapsed(1.5)) {
@@ -151,6 +138,7 @@ public class ArmCommands extends Command {
         break;
       case DEG_179:
         requestedPositionDeg.set(179.0);
+        requestedPosition = angleCheckAndCorrection(currentPosition, requestedPosition);
         if (currentPosition <= 179.1 || currentPosition >= 178.9) {
           timer.start();
           if (timer.hasElapsed(1.5)) {
@@ -165,6 +153,7 @@ public class ArmCommands extends Command {
         break;
       case DEG_NEG_90:
         requestedPositionDeg.set(-90.0);
+        requestedPosition = angleCheckAndCorrection(currentPosition, requestedPosition);
         if (currentPosition >= -90.1 || currentPosition <= -89.9) {
           timer.start();
           if (timer.hasElapsed(1.5)) {
@@ -179,10 +168,12 @@ public class ArmCommands extends Command {
         break;
       case DEG_90:
         requestedPositionDeg.set(90.0);
+        requestedPosition = angleCheckAndCorrection(currentPosition, requestedPosition);
         if (currentPosition <= 90.1 || currentPosition >= 89.9) {}
         break;
       case DEG_NEG_45:
         requestedPositionDeg.set(-45.0);
+        requestedPosition = angleCheckAndCorrection(currentPosition, requestedPosition);
         if (currentPosition <= -45.1 || currentPosition >= -44.9) {
           timer.start();
           if (timer.hasElapsed(1.5)) {
@@ -197,6 +188,7 @@ public class ArmCommands extends Command {
         break;
       case DEG_180:
         requestedPositionDeg.set(180.0);
+        requestedPosition = angleCheckAndCorrection(currentPosition, requestedPosition);
         if (currentPosition <= -45.1 || currentPosition >= -44.9) {
           timer.start();
           if (timer.hasElapsed(1.5)) {
@@ -211,6 +203,7 @@ public class ArmCommands extends Command {
         break;
       case DEG_85:
         requestedPositionDeg.set(85.0);
+        requestedPosition = angleCheckAndCorrection(currentPosition, requestedPosition);
         if (currentPosition <= 85.1 || currentPosition >= 84.9) {
           timer.start();
           if (timer.hasElapsed(1.5)) {
@@ -234,4 +227,26 @@ public class ArmCommands extends Command {
 
   @Override
   public void end(boolean interrupted) {}
-}
+  
+  public double angleCheckAndCorrection(double currentPosition, double requestedPosition) {
+    if (currentPosition < 0) {
+      if (requestedPosition > 0) {
+        if (Math.abs(requestedPosition - currentPosition) > 180) {
+          requestedPosition -= 360;
+        }
+      }
+    } else if (currentPosition > 0) {
+      if (requestedPosition < 0) {
+        if (Math.abs(requestedPosition - currentPosition) > 180) {
+          requestedPosition += 360;
+        }
+      }
+    }
+    if (requestedPosition > 270) {
+      requestedPosition -= 360;
+    } else if (requestedPosition < -270) {
+      requestedPosition += 360;
+    }
+    return requestedPosition;
+  }
+  }
