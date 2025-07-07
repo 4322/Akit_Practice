@@ -6,7 +6,7 @@ import org.littletonrobotics.junction.Logger;
 
 public class Elevator extends SubsystemBase {
   private double currentPosition = 0;
-  private double setposition; // The position of the elevator, in meters
+  private double Position; // The position of the elevator, in meters
   private double voltage = 5;//need accurate voltage for movement position
   public ElevatorIO io;
   // public ElevatorIOInputsAutoLogged inputs = new ElevatorIOInputsAutoLogged();
@@ -25,36 +25,34 @@ public class Elevator extends SubsystemBase {
     TENSECONDS,
     FIFTEENSECONDS; // The elevator is idle
   }
-
+  public ElevatorIOsim inputs = new ElevatorIOsim();
   private ElevatorState currentState = ElevatorState.TWOSECONDSTART;
 
   @Override
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Elevator", inputs);
-    Logger.recordOutput("Elevator/Setpoint", position);
+    Logger.recordOutput("Elevator/Setpoint", currentPosition);
+    io.setPosition(currentPosition);
+    io.setTargetPosition(Position);
+    this.currentPosition =
+        (this.currentPosition + 0.05 * (this.Position - this.currentPosition));
     switch (currentState) {
         case TWOSECONDSTART:
         if (homingTimer.hasElapsed(2)){
-            io.setVoltage(voltage);
-            position = 0.4;
-            io.setPosition(position);
+            Position = 0.4;
             currentState = ElevatorState.SIXSECONDS;
         }
         break;
         case SIXSECONDS:
         if (homingTimer.hasElapsed(6)) {
-            io.setVoltage(voltage);
-            position = 1;
-            io.setPosition(position);
+            Position = 1;
             currentState = ElevatorState.TENSECONDS;
         }
         break;
         case TENSECONDS:
         if (homingTimer.hasElapsed(10)) {
-            io.setVoltage(voltage);
-            position = 0.1;
-            io.setPosition(position);
+            Position = 0.1;
             currentState = ElevatorState.FIFTEENSECONDS;
         }
         break;

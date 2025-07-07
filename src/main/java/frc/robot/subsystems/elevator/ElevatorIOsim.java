@@ -7,7 +7,7 @@ public class ElevatorIOsim implements ElevatorIO {
 
   @Override
   public void updateInputs(ElevatorIOInputs inputs) {
-    inputs.position = currentPosition;
+    inputs.position = this.currentPosition;
     inputs.targetPosition = this.targetPosition; // Simulated voltage, can be adjusted based on simulation needs
   }
 
