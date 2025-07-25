@@ -36,6 +36,8 @@ public class Elevator extends SubsystemBase {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Elevator" + instanceCount, inputs);
+    System.out.println(position);
+    System.out.println(targetPosition);
     io.setPosition(position);
     io.setTargetPosition(targetPosition);
     this.position = (this.position + 0.05 * (this.targetPosition - this.position));
