@@ -2,20 +2,28 @@ package frc.robot.subsystems.elevator;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.elevator.ElevatorIO.ElevatorIOInputs;
+
 import org.littletonrobotics.junction.Logger;
 
 public class Elevator extends SubsystemBase {
-  private double currentPosition = 0;
-  private double Position; // The position of the elevator, in meters
-  public ElevatorIO io;
+  private double position = 0;
+  private double targetPosition; // The position of the elevator, in meters
+  private ElevatorIO io;
+  private int instanceCount;
   // public ElevatorIOInputsAutoLogged inputs = new ElevatorIOInputsAutoLogged();
 
-  public Elevator(ElevatorIO log) {
+  public Elevator(ElevatorIO log, int instanceCount) {
+    this.instanceCount = instanceCount;
     this.io = log;
     homingTimer.reset();
     homingTimer.start();
   }
+  public void teleopInit(){
+    homingTimer.reset();
+    homingTimer.start();
 
+  }
   private Timer homingTimer = new Timer();
 
   public enum ElevatorState {
@@ -24,34 +32,31 @@ public class Elevator extends SubsystemBase {
     TENSECONDS,
     FIFTEENSECONDS; // The elevator is idle
   }
-  public ElevatorIOsim inputs = new ElevatorIOsim();
   private ElevatorState currentState = ElevatorState.TWOSECONDSTART;
 
   @Override
   public void periodic() {
-    io.updateInputs(inputs);
-    Logger.processInputs("Elevator", inputs);
-    Logger.recordOutput("Elevator/Setpoint", currentPosition);
-    io.setPosition(currentPosition);
-    io.setTargetPosition(Position);
-    this.currentPosition =
-        (this.currentPosition + 0.05 * (this.Position - this.currentPosition));
+    Logger.processInputs("Elevator" + instanceCount, inputs);
+    io.setPosition(position);
+    io.setTargetPosition(targetPosition);
+    this.position =
+        (this.position + 0.05 * (this.targetPosition - this.position));
     switch (currentState) {
         case TWOSECONDSTART:
         if (homingTimer.hasElapsed(2)){
-            Position = 0.4;
+            targetPosition = 0.4;
             currentState = ElevatorState.SIXSECONDS;
         }
         break;
         case SIXSECONDS:
         if (homingTimer.hasElapsed(6)) {
-            Position = 1;
+            targetPosition = 1;
             currentState = ElevatorState.TENSECONDS;
         }
         break;
         case TENSECONDS:
         if (homingTimer.hasElapsed(10)) {
-            Position = 0.1;
+            targetPosition = 0.1;
             currentState = ElevatorState.FIFTEENSECONDS;
         }
         break;

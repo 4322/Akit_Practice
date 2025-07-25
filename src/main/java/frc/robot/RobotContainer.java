@@ -32,6 +32,9 @@ import frc.robot.subsystems.roller.RollerIO;
 import frc.robot.subsystems.roller.RollerIOSim;
 import frc.robot.subsystems.roller.RollerIOTalonSRX;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.elevator.ElevatorIO;
+import frc.robot.subsystems.elevator.ElevatorIOsim;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -43,6 +46,7 @@ public class RobotContainer {
   // Subsystems
   private final Drive drive;
   private final Roller roller;
+  public final Elevator elevator;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -57,18 +61,21 @@ public class RobotContainer {
         // Real robot, instantiate hardware IO implementations
         drive = new Drive(new DriveIOTalonSRX(), new GyroIOPigeon2());
         roller = new Roller(new RollerIOTalonSRX());
+        elevator = new Elevator(new ElevatorIO() {}, 0); // Placeholder for Elevator IO
         break;
 
       case SIM:
         // Sim robot, instantiate physics sim IO implementations
         drive = new Drive(new DriveIOSim(), new GyroIO() {});
         roller = new Roller(new RollerIOSim());
+        elevator = new Elevator(new ElevatorIOsim(0) {}, 0);
         break;
 
       default:
         // Replayed robot, disable IO implementations
         drive = new Drive(new DriveIO() {}, new GyroIO() {});
         roller = new Roller(new RollerIO() {});
+        elevator = new Elevator(new ElevatorIO() {}, 0);
         break;
     }
 
@@ -120,4 +127,5 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     return autoChooser.get();
   }
+  public void teleopInit() {}
 }
