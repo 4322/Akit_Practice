@@ -10,7 +10,7 @@ public interface ElevatorIO {
   }
 
   public default void updateInputs(
-      ElevatorIOsim inputs) {} // Update the inputs for the elevator IO
+      ElevatorIOInputs inputs) {} // Update the inputs for the elevator IO
 
   public default void setTargetPosition(double targetPosition) {} // Set the voltage for the elevator motor
 
