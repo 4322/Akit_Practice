@@ -19,7 +19,7 @@ import java.util.function.DoubleSupplier;
 
 public class Roller extends SubsystemBase {
   private final RollerIO io;
-  // private final RollerIOInputsAutoLogged inputs = new RollerIOInputsAutoLogged();
+  private final RollerIOInputsAutoLogged inputs = new RollerIOInputsAutoLogged();
 
   public Roller(RollerIO io) {
     this.io = io;
@@ -27,8 +27,8 @@ public class Roller extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // io.updateInputs(inputs);
-    // Logger.processInputs("Roller", inputs);
+    io.updateInputs(inputs);
+    Logger.processInputs("Roller", inputs);
   }
 
   public Command runPercent(double percent) {
