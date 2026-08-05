@@ -24,6 +24,7 @@ import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
@@ -72,8 +73,8 @@ public class DriveIOTalonFX implements DriveIO {
     tryUntilOk(5, () -> rightLeader.getConfigurator().apply(config, 0.25));
     tryUntilOk(5, () -> rightFollower.getConfigurator().apply(config, 0.25));
 
-    leftFollower.setControl(new Follower(leftLeader.getDeviceID(), false));
-    rightFollower.setControl(new Follower(rightLeader.getDeviceID(), false));
+    leftFollower.setControl(new Follower(leftLeader.getDeviceID(), MotorAlignmentValue.Opposed));
+    rightFollower.setControl(new Follower(rightLeader.getDeviceID(), MotorAlignmentValue.Opposed));
 
     BaseStatusSignal.setUpdateFrequencyForAll(
         50.0,
