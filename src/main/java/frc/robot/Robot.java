@@ -22,6 +22,7 @@ import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+import org.littletonrobotics.junction.wpilog.WPILOGWriter.AdvantageScopeOpenBehavior;
 import org.littletonrobotics.urcl.URCL;
 
 /**
@@ -64,8 +65,8 @@ public class Robot extends LoggedRobot {
       case SIM:
         // Running a physics simulator, log to NT
         Logger.addDataReceiver(
-            new WPILOGWriter()); // TODO: Add file path where you want to save logs as parameter for
-        // WPILOGWriter()
+            // TODO: Add file path where you want to save logs as parameter for WPILOGWriter()
+            new WPILOGWriter("c:\\...", AdvantageScopeOpenBehavior.AUTO));
         Logger.addDataReceiver(new NT4Publisher());
         break;
 
