@@ -18,6 +18,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
@@ -30,6 +31,8 @@ import frc.robot.subsystems.drive.DriveIOSim;
 import frc.robot.subsystems.drive.DriveIOTalonSRX;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
+import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.elevator.ElevatorIO;
 import frc.robot.subsystems.roller.Roller;
 import frc.robot.subsystems.roller.RollerIO;
 import frc.robot.subsystems.roller.RollerIOSim;
@@ -49,7 +52,7 @@ public class RobotContainer {
   public final Arm arm0;
   public final Arm arm1;
   public final Arm arm2;
-
+  public final Elevator elevator;
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
 
@@ -107,6 +110,20 @@ public class RobotContainer {
 
     // Configure the button bindings
     configureButtonBindings();
+  }
+
+  // Elevator
+  public Command getExerciseCommand() {
+    return Commands.sequence(
+        Commands.runOnce(() -> elevator.setTargetPosition(0.0)),
+        Commands.waitSeconds(2.0),
+        Commands.runOnce(() -> elevator.setTargetPosition(0.4)),
+        Commands.waitSeconds(4.0),
+        Commands.runOnce(() -> elevator.setTargetPosition(1.0)),
+        Commands.waitSeconds(4.0),
+        Commands.runOnce(() -> elevator.setTargetPosition(0.1)),
+        Commands.waitSeconds(5.0),
+        Commands.runOnce(() -> System.exit(0)));
   }
 
   /**
