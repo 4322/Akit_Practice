@@ -18,6 +18,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
@@ -30,6 +31,9 @@ import frc.robot.subsystems.drive.DriveIOSim;
 import frc.robot.subsystems.drive.DriveIOTalonSRX;
 import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
+import frc.robot.subsystems.elevator.Elevator;
+import frc.robot.subsystems.elevator.ElevatorIO;
+import frc.robot.subsystems.elevator.ElevatorIOSim;
 import frc.robot.subsystems.roller.Roller;
 import frc.robot.subsystems.roller.RollerIO;
 import frc.robot.subsystems.roller.RollerIOSim;
@@ -66,6 +70,7 @@ public class RobotContainer {
         arm0 = new Arm(new ArmIO() {}, 0);
         arm1 = new Arm(new ArmIO() {}, 1);
         arm2 = new Arm(new ArmIO() {}, 2);
+        elevator = new Elevator(new ElevatorIO() {}, 0);
         break;
 
       case SIM:
@@ -75,6 +80,7 @@ public class RobotContainer {
         arm0 = new Arm(new ArmIOSim(0.75, 7, 125, -360000000, 360000000, 0), 0);
         arm1 = new Arm(new ArmIOSim(1, 12, 150, -360000000, 360000000, 1), 1);
         arm2 = new Arm(new ArmIOSim(1, 12, 150, -270, 270, 2), 2);
+        elevator = new Elevator(new ElevatorIOSim() {}, 0);
         break;
 
       default:
@@ -84,6 +90,8 @@ public class RobotContainer {
         arm0 = new Arm(new ArmIO() {}, 0);
         arm1 = new Arm(new ArmIO() {}, 1);
         arm2 = new Arm(new ArmIO() {}, 2);
+        elevator = new Elevator(new ElevatorIO() {}, 0);
+
         break;
     }
 
@@ -132,6 +140,10 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
+  public Command setElevatorHeights(Elevator elevator) {
+    return Commands.sequence(Commands.run(() -> {}).waitSeconds(3.0));
+  }
+
   public Command getAutonomousCommand() {
     return autoChooser.get();
   }
