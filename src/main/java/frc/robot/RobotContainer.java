@@ -53,6 +53,7 @@ public class RobotContainer {
   public final Arm arm0;
   public final Arm arm1;
   public final Arm arm2;
+  public final Elevator elevator;
 
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
@@ -140,11 +141,15 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command setElevatorHeights(Elevator elevator) {
-    return Commands.sequence(Commands.run(() -> {}).waitSeconds(3.0));
-  }
-
-  public Command getAutonomousCommand() {
-    return autoChooser.get();
+  public Command getElevatorTimelineCommand(Elevator elevator) {
+    return Commands.sequence(
+        Commands.waitSeconds(2.0),
+        Commands.runOnce(() -> elevator.setElevatorHeight(0.4), elevator),
+        Commands.waitSeconds(4.0),
+        Commands.runOnce(() -> elevator.setElevatorHeight(1.0), elevator),
+        Commands.waitSeconds(4.0),
+        Commands.runOnce(() -> elevator.setElevatorHeight(0.1), elevator),
+        Commands.waitSeconds(5.0),
+        Commands.runOnce(() -> System.exit(0)));
   }
 }

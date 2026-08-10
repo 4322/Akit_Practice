@@ -15,6 +15,11 @@ public class Elevator extends SubsystemBase {
     this.instanceNum = instanceNum;
   }
 
+  public void setElevatorHeight(double targetPosMeters) {
+    io.setTargetPosition(targetPosMeters);
+    Logger.recordOutput("Elevator/TargetPosMeters", targetPosMeters);
+  }
+
   @Override
   public void periodic() {
     io.updateInputs(inputs);
@@ -27,9 +32,5 @@ public class Elevator extends SubsystemBase {
 
   public double getPositionMeters() {
     return inputs.posMeters;
-  }
-
-  public void setElevatorHeight(double posMeters) {
-    io.setElevatorHeight(posMeters);
   }
 }

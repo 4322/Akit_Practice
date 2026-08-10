@@ -12,4 +12,8 @@ public interface ElevatorIO {
   public default void updateInputs(ElevatorIOInputs inputs) {}
 
   public default void setVoltage(double volts) {}
+
+  public default void setElevatorHeight(double targetPosMeters) {}
+
+  public default void setTargetPosition(double targetPosMeters) {}
 }
