@@ -141,9 +141,9 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  public Command getElevatorTimelineCommand(Elevator elevator) {
+  public Command elevatorHeightTimeCommand(Elevator elevator) {
     return Commands.sequence(
-        Commands.waitSeconds(2.0),
+        Commands.run(() -> elevator.setVoltage(3.0), elevator).withTimeout(2.0),
         Commands.runOnce(() -> elevator.setElevatorHeight(0.4), elevator),
         Commands.waitSeconds(4.0),
         Commands.runOnce(() -> elevator.setElevatorHeight(1.0), elevator),

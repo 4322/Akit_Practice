@@ -66,7 +66,7 @@ public class Robot extends LoggedRobot {
         // Running a physics simulator, log to NT
         Logger.addDataReceiver(
             // TODO: Add file path where you want to save logs as parameter for WPILOGWriter()
-            new WPILOGWriter("c:\\...", AdvantageScopeOpenBehavior.AUTO));
+            new WPILOGWriter("c:\\logfiles", AdvantageScopeOpenBehavior.AUTO));
         Logger.addDataReceiver(new NT4Publisher());
         break;
 
@@ -118,7 +118,6 @@ public class Robot extends LoggedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    autonomousCommand = robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
     if (autonomousCommand != null) {
