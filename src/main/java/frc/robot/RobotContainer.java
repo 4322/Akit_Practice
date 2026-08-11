@@ -117,6 +117,8 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
   }
+  
+  autonomousCommand = robotContainer.getAutonomousCommand();
 
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
@@ -134,6 +136,8 @@ public class RobotContainer {
     roller.setDefaultCommand(
         roller.runTeleop(
             () -> controller.getRightTriggerAxis(), () -> controller.getLeftTriggerAxis()));
+
+    controller.a().onTrue(elevatorHeightTimeCommand(elevator));
   }
 
   /**
@@ -143,7 +147,7 @@ public class RobotContainer {
    */
   public Command elevatorHeightTimeCommand(Elevator elevator) {
     return Commands.sequence(
-        Commands.run(() -> elevator.setVoltage(3.0), elevator).withTimeout(2.0),
+        Commands.waitSeconds(2.0),
         Commands.runOnce(() -> elevator.setElevatorHeight(0.4), elevator),
         Commands.waitSeconds(4.0),
         Commands.runOnce(() -> elevator.setElevatorHeight(1.0), elevator),
