@@ -66,7 +66,7 @@ public class Robot extends LoggedRobot {
         // Running a physics simulator, log to NT
         Logger.addDataReceiver(
             // TODO: Add file path where you want to save logs as parameter for WPILOGWriter()
-            new WPILOGWriter("c:\\...", AdvantageScopeOpenBehavior.AUTO));
+            new WPILOGWriter("..", AdvantageScopeOpenBehavior.AUTO));
         Logger.addDataReceiver(new NT4Publisher());
         break;
 
