@@ -1,10 +1,11 @@
 package frc.robot.subsystems.elevator;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
 public class Elevator extends SubsystemBase {
-
+  private double lastLogTime = 0.0;
   private double targetPosMeters = 0.0;
 
   private ElevatorIO io;
@@ -22,6 +23,13 @@ public class Elevator extends SubsystemBase {
     io.updateInputs(inputs);
     Logger.processInputs("Elevator " + instanceNum, inputs);
     Logger.recordOutput("Elevator " + instanceNum + "/TargetPosMeters", targetPosMeters);
+
+    double currentTime = Timer.getFPGATimestamp();
+
+    if (currentTime - lastLogTime >= 0.5) {
+      System.out.println("Timestamp: " + currentTime + " | posMeters: " + getPositionMeters());
+      lastLogTime = currentTime;
+    }
   }
 
   public void setElevatorHeight(double targetPosMeters) {

@@ -11,7 +11,9 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 
+
 package frc.robot;
+
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -33,11 +35,13 @@ import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIO;
+import frc.robot.subsystems.elevator.ElevatorIOSim;
 import frc.robot.subsystems.roller.Roller;
 import frc.robot.subsystems.roller.RollerIO;
 import frc.robot.subsystems.roller.RollerIOSim;
 import frc.robot.subsystems.roller.RollerIOTalonSRX;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -54,11 +58,14 @@ public class RobotContainer {
   public final Arm arm2;
   public final Elevator elevator;
 
+
   // Controller
   private final CommandXboxController controller = new CommandXboxController(0);
 
+
   // Dashboard inputs
   private final LoggedDashboardChooser<Command> autoChooser;
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -73,6 +80,7 @@ public class RobotContainer {
         elevator = new Elevator(new ElevatorIO() {}, 0);
         break;
 
+
       case SIM:
         // Sim robot, instantiate physics sim IO implementations
         drive = new Drive(new DriveIOSim(), new GyroIO() {});
@@ -80,9 +88,11 @@ public class RobotContainer {
         arm0 = new Arm(new ArmIOSim(0.75, 7, 125, -360000000, 360000000, 0), 0);
         arm1 = new Arm(new ArmIOSim(1, 12, 150, -360000000, 360000000, 1), 1);
         arm2 = new Arm(new ArmIOSim(1, 12, 150, -270, 270, 2), 2);
-        elevator = new Elevator(new ElevatorIO() {}, 0);
+        elevator = new Elevator(new ElevatorIOSim() {}, 0);
+
 
         break;
+
 
       default:
         // Replayed robot, disable IO implementations
@@ -93,12 +103,15 @@ public class RobotContainer {
         arm2 = new Arm(new ArmIO() {}, 2);
         elevator = new Elevator(new ElevatorIO() {}, 0);
 
+
         break;
     }
+
 
     // Set up auto routines
     NamedCommands.registerCommand("Score", roller.runPercent(1.0).withTimeout(3.0));
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
+
 
     // Set up SysId routines
     autoChooser.addOption(
@@ -114,9 +127,11 @@ public class RobotContainer {
     autoChooser.addOption(
         "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
+
     // Configure the button bindings
     configureButtonBindings();
   }
+
 
   /**
    * Use this method to define your button->command mappings. Buttons can be created by
@@ -130,11 +145,13 @@ public class RobotContainer {
         DriveCommands.arcadeDrive(
             drive, () -> -controller.getLeftY(), () -> -controller.getRightX()));
 
+
     // Default roller command, control with triggers
     roller.setDefaultCommand(
         roller.runTeleop(
             () -> controller.getRightTriggerAxis(), () -> controller.getLeftTriggerAxis()));
   }
+
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -153,3 +170,6 @@ public class RobotContainer {
         Commands.runOnce(() -> System.exit(0)));
   }
 }
+
+
+
