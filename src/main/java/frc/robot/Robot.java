@@ -65,8 +65,10 @@ public class Robot extends LoggedRobot {
       case SIM:
         // Running a physics simulator, log to NT
         Logger.addDataReceiver(
-            // TODO: ".." can be changed to any file path (ex. C://logs) where you'd prefer to save AdvantageKit logs
-            // By default it saves it in the folder the repository is located in (logs aren't uploaded to the repository by default)
+            // TODO: ".." can be changed to any file path (ex. C://logs) where you'd prefer to save
+            // AdvantageKit logs
+            // By default it saves it in the folder the repository is located in (logs aren't
+            // uploaded to the repository by default)
             new WPILOGWriter("..", AdvantageScopeOpenBehavior.AUTO));
         Logger.addDataReceiver(new NT4Publisher());
         break;
