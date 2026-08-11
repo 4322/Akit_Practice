@@ -38,6 +38,8 @@ import frc.robot.subsystems.roller.RollerIO;
 import frc.robot.subsystems.roller.RollerIOSim;
 import frc.robot.subsystems.roller.RollerIOTalonSRX;
 import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+import frc.robot.subsystems.elevator.ElevatorIOSim;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -69,6 +71,7 @@ public class RobotContainer {
         arm0 = new Arm(new ArmIO() {}, 0);
         arm1 = new Arm(new ArmIO() {}, 1);
         arm2 = new Arm(new ArmIO() {}, 2);
+        elevator = new Elevator(new ElevatorIO() {});
         break;
 
       case SIM:
@@ -78,6 +81,7 @@ public class RobotContainer {
         arm0 = new Arm(new ArmIOSim(0.75, 7, 125, -360000000, 360000000, 0), 0);
         arm1 = new Arm(new ArmIOSim(1, 12, 150, -360000000, 360000000, 1), 1);
         arm2 = new Arm(new ArmIOSim(1, 12, 150, -270, 270, 2), 2);
+        elevator = new Elevator(new ElevatorIOSim());
         break;
 
       default:
@@ -87,6 +91,7 @@ public class RobotContainer {
         arm0 = new Arm(new ArmIO() {}, 0);
         arm1 = new Arm(new ArmIO() {}, 1);
         arm2 = new Arm(new ArmIO() {}, 2);
+        elevator = new Elevator(new ElevatorIO() {});
         break;
     }
 
