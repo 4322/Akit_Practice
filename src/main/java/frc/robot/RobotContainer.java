@@ -33,7 +33,6 @@ import frc.robot.subsystems.drive.GyroIO;
 import frc.robot.subsystems.drive.GyroIOPigeon2;
 import frc.robot.subsystems.elevator.Elevator;
 import frc.robot.subsystems.elevator.ElevatorIO;
-import frc.robot.subsystems.elevator.ElevatorIOSim;
 import frc.robot.subsystems.roller.Roller;
 import frc.robot.subsystems.roller.RollerIO;
 import frc.robot.subsystems.roller.RollerIOSim;
@@ -81,7 +80,8 @@ public class RobotContainer {
         arm0 = new Arm(new ArmIOSim(0.75, 7, 125, -360000000, 360000000, 0), 0);
         arm1 = new Arm(new ArmIOSim(1, 12, 150, -360000000, 360000000, 1), 1);
         arm2 = new Arm(new ArmIOSim(1, 12, 150, -270, 270, 2), 2);
-        elevator = new Elevator(new ElevatorIOSim() {}, 0);
+        elevator = new Elevator(new ElevatorIO() {}, 0);
+
         break;
 
       default:
@@ -134,8 +134,6 @@ public class RobotContainer {
     roller.setDefaultCommand(
         roller.runTeleop(
             () -> controller.getRightTriggerAxis(), () -> controller.getLeftTriggerAxis()));
-
-    elevatorHeightTimeCommand(elevator).schedule();
   }
 
   /**

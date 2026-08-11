@@ -140,6 +140,8 @@ public class Robot extends LoggedRobot {
     if (autonomousCommand != null) {
       autonomousCommand.cancel();
     }
+
+    robotContainer.elevatorHeightTimeCommand(robotContainer.elevator).schedule();
   }
 
   /** This function is called periodically during operator control. */
