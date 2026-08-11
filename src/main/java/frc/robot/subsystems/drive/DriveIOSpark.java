@@ -11,13 +11,10 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 
-
 package frc.robot.subsystems.drive;
-
 
 import static frc.robot.subsystems.drive.DriveConstants.*;
 import static frc.robot.util.SparkUtil.*;
-
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
@@ -30,7 +27,6 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import java.util.function.DoubleSupplier;
-
 
 /**
  * This drive implementation is for Spark devices. It defaults to brushless control, but can be
@@ -47,7 +43,6 @@ public class DriveIOSpark implements DriveIO {
   private final SparkClosedLoopController leftController = leftLeader.getClosedLoopController();
   private final SparkClosedLoopController rightController = rightLeader.getClosedLoopController();
 
-
   public DriveIOSpark() {
     // Create config
     var config = new SparkMaxConfig();
@@ -60,7 +55,6 @@ public class DriveIOSpark implements DriveIO {
             (2 * Math.PI) / 60.0 / motorReduction) // Rotor RPM -> Wheel Rad/Sec
         .uvwMeasurementPeriod(10)
         .uvwAverageDepth(2);
-
 
     // Apply config to leaders
     config.inverted(leftInverted);
@@ -77,7 +71,6 @@ public class DriveIOSpark implements DriveIO {
         () ->
             rightLeader.configure(
                 config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
-
 
     // Apply config to followers
     config.inverted(leftInverted).follow(leftLeader);
@@ -96,7 +89,6 @@ public class DriveIOSpark implements DriveIO {
                 config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
   }
 
-
   @Override
   public void updateInputs(DriveIOInputs inputs) {
     ifOk(leftLeader, leftEncoder::getPosition, (value) -> inputs.leftPositionRad = value);
@@ -110,7 +102,6 @@ public class DriveIOSpark implements DriveIO {
         new DoubleSupplier[] {leftLeader::getOutputCurrent, leftLeader::getOutputCurrent},
         (values) -> inputs.leftCurrentAmps = values);
 
-
     ifOk(rightLeader, rightEncoder::getPosition, (value) -> inputs.rightPositionRad = value);
     ifOk(rightLeader, rightEncoder::getVelocity, (value) -> inputs.rightVelocityRadPerSec = value);
     ifOk(
@@ -123,13 +114,11 @@ public class DriveIOSpark implements DriveIO {
         (values) -> inputs.rightCurrentAmps = values);
   }
 
-
   @Override
   public void setVoltage(double leftVolts, double rightVolts) {
     leftLeader.setVoltage(leftVolts);
     rightLeader.setVoltage(rightVolts);
   }
-
 
   @Override
   public void setVelocity(
@@ -140,4 +129,3 @@ public class DriveIOSpark implements DriveIO {
         rightRadPerSec, ControlType.kVelocity, ClosedLoopSlot.kSlot0, rightFFVolts);
   }
 }
-

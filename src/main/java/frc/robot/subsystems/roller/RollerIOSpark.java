@@ -11,13 +11,10 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 // GNU General Public License for more details.
 
-
 package frc.robot.subsystems.roller;
-
 
 import static frc.robot.subsystems.roller.RollerConstants.*;
 import static frc.robot.util.SparkUtil.*;
-
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -28,7 +25,6 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import java.util.function.DoubleSupplier;
 
-
 /**
  * This roller implementation is for Spark devices. It defaults to brushless control, but can be
  * easily adapted for a brushed motor. A Spark Flex can be used by swapping all instances of
@@ -37,7 +33,6 @@ import java.util.function.DoubleSupplier;
 public class RollerIOSpark implements RollerIO {
   private final SparkMax roller = new SparkMax(rollerCanId, MotorType.kBrushless);
   private final RelativeEncoder encoder = roller.getEncoder();
-
 
   public RollerIOSpark() {
     var config = new SparkMaxConfig();
@@ -50,7 +45,6 @@ public class RollerIOSpark implements RollerIO {
         .uvwMeasurementPeriod(10)
         .uvwAverageDepth(2);
 
-
     tryUntilOk(
         roller,
         5,
@@ -58,7 +52,6 @@ public class RollerIOSpark implements RollerIO {
             roller.configure(
                 config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters));
   }
-
 
   @Override
   public void updateInputs(RollerIOInputs inputs) {
@@ -71,12 +64,8 @@ public class RollerIOSpark implements RollerIO {
     ifOk(roller, roller::getOutputCurrent, (value) -> inputs.currentAmps = value);
   }
 
-
   @Override
   public void setVoltage(double volts) {
     roller.setVoltage(volts);
   }
 }
-
-
-
