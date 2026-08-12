@@ -90,6 +90,17 @@ public class Robot extends LoggedRobot {
     robotContainer = new RobotContainer();
   }
 
+  @Override
+  public void robotInit() {
+    setupLogger();
+    robotContainer = new RobotContainer();
+  }
+
+  private void setupLogger() {
+    Logger.recordMetadata("Project", "Practice");
+    Logger.start();
+  }
+
   /** This function is called periodically during all modes. */
   @Override
   public void robotPeriodic() {
