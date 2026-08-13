@@ -3,6 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.arm.Arm;
+import org.littletonrobotics.junction.Logger;
 
 public class MoveArmToAngle extends Command {
   private final Arm arm;
@@ -29,6 +30,8 @@ public class MoveArmToAngle extends Command {
   public void execute() {
     double outputVoltage = pid.calculate(arm.getPositionDeg());
     arm.setVoltage(outputVoltage);
+
+    Logger.recordOutput("Arm/TargetAngleDegree", targetAngleDegrees);
   }
 
   @Override
