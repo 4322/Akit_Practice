@@ -20,7 +20,7 @@ public class Arm extends SubsystemBase {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Arm " + instanceNum, inputs);
-    Logger.recordOutput("Arm/AngleDeg", inputs.positionDeg);
+    Logger.recordOutput("Arm" + instanceNum + "/AngleDeg", inputs.positionDeg);
   }
 
   public void setVoltage(double voltage) {
