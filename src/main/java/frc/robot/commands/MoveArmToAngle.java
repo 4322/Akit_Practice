@@ -40,7 +40,5 @@ public class MoveArmToAngle extends Command {
   }
 
   @Override
-  public void end(boolean interrupted) {
-    arm.setVoltage(0);
-  }
+  public void end(boolean interrupted) {}
 }
