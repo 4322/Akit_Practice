@@ -9,7 +9,7 @@ public class MoveArmToAngle extends Command {
   private final Arm arm;
   private final double targetAngleDegrees;
 
-  private final PIDController pid = new PIDController(1.0, 0.0, 0.0);
+  private final PIDController pid = new PIDController(0.8, 0.05, 0.0);
 
   public MoveArmToAngle(Arm arm, double targetAngleDegrees) {
     this.arm = arm;
