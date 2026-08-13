@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
+import frc.robot.commands.MoveArmToAngle;
 import frc.robot.subsystems.arm.Arm;
 import frc.robot.subsystems.arm.ArmIO;
 import frc.robot.subsystems.arm.ArmIOSim;
@@ -134,5 +135,16 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return autoChooser.get();
+  }
+
+  // arm code
+  public Command getArm1SeqCommand() {
+    return new MoveArmToAngle(arm0, 45)
+        .andThen(new MoveArmToAngle(arm0, 135))
+        .andThen(new MoveArmToAngle(arm0, 0))
+        .andThen(new MoveArmToAngle(arm0, -179))
+        .andThen(new MoveArmToAngle(arm0, 179))
+        .andThen(new MoveArmToAngle(arm0, -90))
+        .andThen(new MoveArmToAngle(arm0, 90));
   }
 }
