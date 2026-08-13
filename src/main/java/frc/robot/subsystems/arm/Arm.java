@@ -4,9 +4,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
 public class Arm extends SubsystemBase {
-  private static final double armMeters = 0.75;
-  private static final double armKg = 5.0;
-  private static final double gearReduction = 50.0;
   private static final double minDeg = -180.0;
   private static final double maxDeg = 180.0;
 
