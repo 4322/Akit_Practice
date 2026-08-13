@@ -14,7 +14,7 @@ public class MoveArmToAngle extends Command {
     this.arm = arm;
     this.targetAngleDegrees = targetAngleDegrees;
 
-    pid.setTolerance(2.0);
+    pid.setTolerance(1.0);
 
     addRequirements(arm);
   }

@@ -18,6 +18,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.commands.DriveCommands;
@@ -139,12 +140,20 @@ public class RobotContainer {
 
   // arm code
   public Command getArm1SeqCommand() {
-    return new MoveArmToAngle(arm0, 45)
+    return new MoveArmToAngle(arm0, 0)
+        .andThen(new WaitCommand(1.0))
+        .andThen(new MoveArmToAngle(arm0, 45))
+        .andThen(new WaitCommand(1.0))
         .andThen(new MoveArmToAngle(arm0, 135))
+        .andThen(new WaitCommand(1.0))
         .andThen(new MoveArmToAngle(arm0, 0))
+        .andThen(new WaitCommand(1.0))
         .andThen(new MoveArmToAngle(arm0, -179))
+        .andThen(new WaitCommand(1.0))
         .andThen(new MoveArmToAngle(arm0, 179))
+        .andThen(new WaitCommand(1.0))
         .andThen(new MoveArmToAngle(arm0, -90))
+        .andThen(new WaitCommand(1.0))
         .andThen(new MoveArmToAngle(arm0, 90));
   }
 }
