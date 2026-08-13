@@ -25,22 +25,22 @@ public class ArmIOSim implements ArmIO {
       armPivot.append(new LoggedMechanismLigament2d("Arm", 1, 0, 6, new Color8Bit(Color.kYellow)));
 
   public ArmIOSim(
-      double armLengthMeters,
-      double armMassKg,
+      double armMeters,
+      double armKg,
       double gearReduction,
-      double minAngleDeg,
-      double maxAngleDeg,
+      double minDeg,
+      double maxDeg,
       int instanceNum) {
     sim =
         new SingleJointedArmSim(
             DCMotor.getNEO(1),
             gearReduction,
-            SingleJointedArmSim.estimateMOI(armLengthMeters, armMassKg),
-            armLengthMeters,
+            SingleJointedArmSim.estimateMOI(armMeters, armKg),
+            armMeters,
             Units.degreesToRadians(
-                minAngleDeg - 2), // add 2 degree of tolerance to allow for PID oscillation
+                minDeg - 2), // add 2 degree of tolerance to allow for PID oscillation
             Units.degreesToRadians(
-                maxAngleDeg + 2), // add 2 degree of tolerance to allow for PID oscillation
+                maxDeg + 2), // add 2 degree of tolerance to allow for PID oscillation
             true,
             0);
     this.instanceNum = instanceNum;

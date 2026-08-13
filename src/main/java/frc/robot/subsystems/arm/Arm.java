@@ -4,11 +4,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import org.littletonrobotics.junction.Logger;
 
 public class Arm extends SubsystemBase {
-  // 0 degrees is straight ahead and positive is up. The position is reported as +/- 180 degrees.
+  private static final double armMeters = 0.75;
+  private static final double armKg = 5.0;
+  private static final double gearReduction = 50.0;
+  private static final double minDeg = -180.0;
+  private static final double maxDeg = 180.0;
 
   private ArmIO io;
   private ArmIOInputsAutoLogged inputs = new ArmIOInputsAutoLogged();
-
   private int instanceNum;
 
   public Arm(ArmIO io, int instanceNum) {
@@ -20,6 +23,7 @@ public class Arm extends SubsystemBase {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Arm " + instanceNum, inputs);
+    Logger.recordOutput("Arm/AngleDeg", inputs.positionDeg);
   }
 
   public void setVoltage(double voltage) {
@@ -28,5 +32,14 @@ public class Arm extends SubsystemBase {
 
   public double getPositionDeg() {
     return inputs.positionDeg;
+  }
+
+  // Adding a getter method uses the variables, which fixes the warning!
+  public static double getMaxAngleDeg() {
+    return maxDeg;
+  }
+
+  public static double getMinAngleDeg() {
+    return minDeg;
   }
 }
