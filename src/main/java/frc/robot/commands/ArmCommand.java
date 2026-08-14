@@ -58,10 +58,4 @@ public class ArmCommand extends Command {
   public boolean isFinished() {
     return currentIndex >= targets.length;
   }
-
-  @Override
-  public void end(boolean interrupted) {
-    arm.setVoltage(0.0);
-    timer.stop();
-  }
 }

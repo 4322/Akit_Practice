@@ -73,8 +73,8 @@ public class RobotContainer {
         // Sim robot, instantiate physics sim IO implementations
         drive = new Drive(new DriveIOSim(), new GyroIO() {});
         roller = new Roller(new RollerIOSim());
-        arm0 = new Arm(new ArmIOSim(0.75, 7, 125, -360000000, 360000000, 0), 0);
-        arm1 = new Arm(new ArmIOSim(1, 12, 150, -360000000, 360000000, 1), 1);
+        arm0 = new Arm(new ArmIOSim(1, 12, 150, -270, 270, 0), 0);
+        arm1 = new Arm(new ArmIOSim(1, 12, 150, -270, 270, 1), 1);
         arm2 = new Arm(new ArmIOSim(1, 12, 150, -270, 270, 2), 2);
         break;
 
@@ -134,6 +134,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new ArmCommand(arm1);
+    return new ArmCommand(arm0);
   }
 }
