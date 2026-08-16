@@ -11,7 +11,7 @@ public class Arm extends SubsystemBase {
   private ArmIOInputsAutoLogged inputs = new ArmIOInputsAutoLogged();
   private int instanceNum;
 
-  private final PIDController pid = new PIDController(0.8, 0.0, 0.05);
+  private final PIDController pid = new PIDController(1.2, 0.02, 0.05);
 
   public Arm(ArmIO io, int instanceNum) {
     this.io = io;
