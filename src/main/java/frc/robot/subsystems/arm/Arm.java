@@ -11,10 +11,10 @@ public class Arm extends SubsystemBase {
   private ArmIOInputsAutoLogged inputs = new ArmIOInputsAutoLogged();
   private int instanceNum;
 
-  private final TrapezoidProfile.Constraints constraints =
-      new TrapezoidProfile.Constraints(360.0, 720.0);
 
-  private final ProfiledPIDController pid = new ProfiledPIDController(1.2, 0.0, 0.0, constraints);
+  private final ProfiledPIDController pid =
+  new ProfiledPIDController(1.5, 0.02, 0.05, new TrapezoidProfile.Constraints(360.0, 720.0));
+  // note to self: 360 = 1 rotation a second max, 720 = still -> 360 in half a second
 
   public Arm(ArmIO io, int instanceNum) {
     this.io = io;
