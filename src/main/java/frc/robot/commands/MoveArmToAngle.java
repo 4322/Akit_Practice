@@ -7,7 +7,6 @@ public class MoveArmToAngle extends Command {
   private final Arm arm;
   private final double targetAngleDegrees;
 
-
   public MoveArmToAngle(Arm arm, double targetAngleDegrees) {
     this.arm = arm;
     this.targetAngleDegrees = targetAngleDegrees;
