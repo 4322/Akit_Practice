@@ -8,7 +8,7 @@ import frc.robot.subsystems.arm.Arm;
 public class ArmCommand extends Command {
   private final Arm arm;
   private final PIDController controller = new PIDController(2.0, 0.0, 0.06);
-  private final double[] targets = {45.0, 135.0, 179.0, 0.0, -179.0, -90.0, 90.0};
+  private final double[] targets = {45.0, 90.0, 135.0, 179.0, 0.0, -179.0, -90.0};
   private int currentIndex = 0;
 
   private final Timer timer = new Timer();
