@@ -1,14 +1,20 @@
 package frc.robot.commands;
 
-import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.arm.Arm;
 
 public class ArmCommand extends Command {
   private final Arm arm;
-  private final PIDController controller = new PIDController(2.0, 0.0, 0.06);
-  private final double[] targets = {45.0, 135.0, 179.0, 0.0, -179.0, -90.0, 90.0};
+
+  // Keep the same ProfiledPIDController parameters from Exercise 3
+  private final ProfiledPIDController controller =
+      new ProfiledPIDController(2.0, 0.0, 0.05, new TrapezoidProfile.Constraints(200.0, 300.0));
+
+  // Exercise 3 target sequence
+  private final double[] targets = {45.0, 179.0, -179.0, -90.0, -45.0, 85.0};
   private int currentIndex = 0;
 
   private final Timer timer = new Timer();
@@ -22,7 +28,7 @@ public class ArmCommand extends Command {
   @Override
   public void initialize() {
     currentIndex = 0;
-    controller.enableContinuousInput(-180.0, 180.0);
+    // NOTE: Do NOT enable continuous input here, as arm2 has a +/- 270 degree physical limit!
     controller.setTolerance(2.0);
     timer.reset();
     waiting = false;
@@ -31,14 +37,13 @@ public class ArmCommand extends Command {
   @Override
   public void execute() {
     if (currentIndex < targets.length) {
-      // Always keep the controller's setpoint synced to the active target
-      controller.setSetpoint(targets[currentIndex]);
+      controller.setGoal(targets[currentIndex]);
 
       double currentPos = arm.getPositionDeg();
       double output = controller.calculate(currentPos);
       arm.setVoltage(output);
 
-      if (controller.atSetpoint() && !waiting) {
+      if (controller.atGoal() && !waiting) {
         waiting = true;
         timer.restart();
       }
@@ -53,5 +58,10 @@ public class ArmCommand extends Command {
   @Override
   public boolean isFinished() {
     return currentIndex >= targets.length;
+  }
+
+  @Override
+  public void end(boolean interrupted) {
+    arm.setVoltage(0.0);
   }
 }
