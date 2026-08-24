@@ -140,18 +140,18 @@ public class RobotContainer {
 
   // arm code
   public Command getArm1SeqCommand() {
-    return new MoveArmToAngle(arm1, 45)
+    return new MoveArmToAngle(arm2, 45)
         .andThen(new WaitCommand(1.0))
-        .andThen(new MoveArmToAngle(arm1, 135))
+        .andThen(new MoveArmToAngle(arm2, 179))
         .andThen(new WaitCommand(1.0))
-        .andThen(new MoveArmToAngle(arm1, 0))
+        .andThen(new MoveArmToAngle(arm2, -179))
         .andThen(new WaitCommand(1.0))
-        .andThen(new MoveArmToAngle(arm1, -179))
+        .andThen(new MoveArmToAngle(arm2, -90))
         .andThen(new WaitCommand(1.0))
-        .andThen(new MoveArmToAngle(arm1, 179))
+        .andThen(new MoveArmToAngle(arm2, -45))
         .andThen(new WaitCommand(1.0))
-        .andThen(new MoveArmToAngle(arm1, -90))
+        .andThen(new MoveArmToAngle(arm2, 180))
         .andThen(new WaitCommand(1.0))
-        .andThen(new MoveArmToAngle(arm1, 90));
+        .andThen(new MoveArmToAngle(arm2, 85));
   }
 }

@@ -11,9 +11,8 @@ public class Arm extends SubsystemBase {
   private ArmIOInputsAutoLogged inputs = new ArmIOInputsAutoLogged();
   private int instanceNum;
 
-
   private final ProfiledPIDController pid =
-  new ProfiledPIDController(2.5, 0.05, 0.05, new TrapezoidProfile.Constraints(360.0, 720.0));
+      new ProfiledPIDController(2.5, 0.05, 0.05, new TrapezoidProfile.Constraints(360.0, 720.0));
   // note to self: 360 = 1 rotation a second max, 720 = still -> 360 in half a second
 
   public Arm(ArmIO io, int instanceNum) {
